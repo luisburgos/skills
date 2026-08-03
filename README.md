@@ -29,6 +29,9 @@ its own, or only you can.
 
 Reachable by the model or by you.
 
+- **[drafting-release-notes](./skills/drafting-release-notes/SKILL.md)** — draft
+  curated GitHub Release notes for a tag, as a draft the user approves before it
+  goes public.
 - **[naming-skills](./skills/naming-skills/SKILL.md)** — name a new skill, or
   audit existing names, against this repo's action/reference taxonomy.
 
