@@ -1,7 +1,7 @@
 # skills
 
-Agent skills for Claude Code — release craft, skill authoring, and the
-conventions that keep them predictable.
+Agent skills for Claude Code — skill authoring, and the conventions that keep
+them predictable.
 
 A skill exists to wrangle determinism out of a stochastic system. The virtue is
 **predictability**: the agent taking the same *process* every run, not producing

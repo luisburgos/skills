@@ -8,12 +8,12 @@
     {
       "name": "luisburgos-skills",
       "source": "./",
-      "description": "Agent skills for release craft and skill authoring — naming conventions, release notes, and the discipline that keeps them predictable.",
+      "description": "Agent skills for skill authoring — naming conventions and the discipline that keeps them predictable.",
       "category": "engineering",
       "keywords": [
         "skills",
-        "release",
         "authoring",
+        "naming",
         "conventions"
       ]
     }
