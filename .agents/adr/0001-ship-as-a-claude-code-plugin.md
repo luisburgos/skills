@@ -13,8 +13,8 @@ Skills in this repo need a distribution path. Two exist:
   version users can be updated to.
 
 The loose-file path is what this repo exists to replace. Two skills already
-lived that way (`stores-listing-notes-writer`, `github-release-notes-writer`),
-and the first was only discoverable because its author remembered it existed.
+lived that way, and one was only discoverable because its author remembered it
+existed.
 
 ## Decision
 
