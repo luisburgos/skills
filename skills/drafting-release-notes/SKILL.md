@@ -65,11 +65,15 @@ tag added over the previous one, or everything since the last release with real
 notes?").
 
 ```sh
+gh release list --repo <owner>/<repo> --limit 10
 git log --oneline <prev-tag>..<this-tag>
 ```
 
-**Done when** both ends of the range are fixed and, where it was ambiguous, the
-user chose.
+That release list also shows whether prior titles carry a themed name — note it
+now; step 4 reads it rather than fetching it again.
+
+**Done when** both ends of the range are fixed, the prior-title style is noted,
+and, where it was ambiguous, the user chose.
 
 ## 3. Gather the material
 
@@ -117,11 +121,7 @@ version tags. The tag passed to `gh release` must match the actual tag; the titl
 is free text, so a repo can tag bare `0.16.0` while its release titles say
 `v0.16.0 – Name`.
 
-**Release-title style** — do prior releases carry a short name?
-
-```sh
-gh release list --repo <owner>/<repo> --limit 10
-```
+**Release-title style** — from the release list read in step 2:
 
 - Named (`v0.14.0 – New home`) → give this one a themed name too.
 - Bare (`1.2.0`) → keep it bare.

@@ -26,8 +26,8 @@ body, match this structure and cadence.
 <details>
 <summary>Full commit list (since <prev-version>)</summary>
 
-* <commit subject> by @author in <PR url>          ← for PR-merged work
-* <commit subject> ([<sha>](<commit url>))           ← for direct commits
+* <commit subject> by @author in <PR url>            ← for PR-merged work
+* <commit subject> ([<short-sha>](<commit url>))     ← for direct commits
 ...
 
 </details>
@@ -70,7 +70,8 @@ Cite whatever actually carried the change:
 - Work that landed via a **merged PR** → `(#68)` in the bullet, and
   `* <subject> by @author in <PR url>` in the full commit list.
 - Work committed **directly** (no PR) → `` (`6280f36`) `` in the bullet (a short
-  SHA in backticks), and `* <subject> ([<sha>](<commit-url>))` in the list.
+  SHA in backticks), and `* <subject> ([<short-sha>](<commit-url>))` in the
+  list — short SHA as the link text, the full SHA in the URL.
 
 A single release usually mixes both. Check per commit — don't assume.
 (`gh api repos/<owner>/<repo>/commits/<sha>/pulls` tells you if a commit had a PR.)
