@@ -72,8 +72,13 @@ git log --oneline <prev-tag>..<this-tag>
 That release list also shows whether prior titles carry a themed name — note it
 now; step 4 reads it rather than fetching it again.
 
-**Done when** both ends of the range are fixed, the prior-title style is noted,
-and, where it was ambiguous, the user chose.
+**A first release has no previous tag.** The range is then the whole history
+(`git log --oneline <this-tag>`), and the body ends on a commits link rather
+than a compare link — `body-format.md` gives both forms.
+
+**Done when** both ends of the range are fixed — or the release is known to be
+the first — the prior-title style is noted, and, where it was ambiguous, the
+user chose.
 
 ## 3. Gather the material
 

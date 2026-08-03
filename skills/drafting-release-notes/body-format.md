@@ -93,6 +93,10 @@ curated sections stay skimmable while the complete list is one click away. Label
 its summary with the span, e.g. `Full commit list (since 0.15.0)`. End the whole
 body with the **Full Changelog** compare link on its own line.
 
+A **first release** has no previous tag to compare against. Label the summary
+plainly (`Full commit list`) and link the tag's commits instead:
+`https://github.com/<owner>/<repo>/commits/<this-tag>`.
+
 ## New contributors
 
 If the range includes anyone's first merged contribution, add a
