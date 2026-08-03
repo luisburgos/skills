@@ -1,0 +1,21 @@
+{
+  "name": "luisburgos",
+  "owner": {
+    "name": "Luis Burgos"
+  },
+  "description": "Luis Burgos's skills as an installable Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "luisburgos-skills",
+      "source": "./",
+      "description": "Agent skills for release craft and skill authoring — naming conventions, release notes, and the discipline that keeps them predictable.",
+      "category": "engineering",
+      "keywords": [
+        "skills",
+        "release",
+        "authoring",
+        "conventions"
+      ]
+    }
+  ]
+}
