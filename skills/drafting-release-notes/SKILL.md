@@ -133,12 +133,12 @@ gh release list --repo <owner>/<repo> --limit 10
 Then write the body to a **temp file** — never inline into the `gh` command,
 since bodies are multi-line markdown.
 
-**The body's structure and cadence are defined in
-[notes-style.md](notes-style.md) — read it now and match it.** It carries the
-section shape, the bold-lead-in + one-clipped-clause bullet form, the grouping
-rules, the `<details>` commit list, and the compare link.
+**The body's format is defined in [body-format.md](body-format.md) — read it now
+and match it.** It carries the section shape, the bold-lead-in +
+one-clipped-clause bullet form, the grouping rules, the `<details>` commit list,
+and the compare link.
 
-**Done when** the drafted body matches every section of `notes-style.md`, the
+**Done when** the drafted body matches every section of `body-format.md`, the
 title matches the convention just read, and the tag string matches the real tag.
 
 ## 5. Create the draft and preview it

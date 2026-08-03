@@ -1,4 +1,4 @@
-# GitHub release notes — house style
+# The release body — format
 
 The reference implementation for what "good" looks like. When drafting a release
 body, match this structure and cadence.
