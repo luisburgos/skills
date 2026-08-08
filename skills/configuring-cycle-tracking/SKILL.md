@@ -61,7 +61,10 @@ Ask these together, with your best guess pre-filled, rather than one at a time:
   "artifact_root": "cycles",
   "scan_roots": ["~/Work/Projects"],
   "exclude": ["~/Work/Archive"],
-  "author_emails": ["hola@luisburgos.xyz"],
+  "author_emails": [
+    "dev@example.com",
+    "12345+user@users.noreply.github.com"
+  ],
   "task_source": {
     "kind": "drop-folder",
     "path": "cycles/raw-data",

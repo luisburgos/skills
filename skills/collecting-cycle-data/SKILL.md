@@ -33,10 +33,10 @@ The old key was `author_email`, a single string. Name it in the message when you
 find it, since that is the likely cause and the fix is mechanical:
 
 > `config.json` has `author_email` (a string), which this skill no longer reads.
-> Rename it to `author_emails` and make it a list:
-> `"author_emails": ["hola@luisburgos.xyz"]`. Add any other addresses whose
-> commits should count — a work address, or a GitHub `noreply` address that
-> web-UI merges are attributed to. Then re-run.
+> Rename it to `author_emails` and make it a list — keep the address already
+> there as the first entry. Add any other addresses whose commits should count:
+> a work address, or the GitHub `noreply` address that web-UI merges are
+> attributed to. Then re-run.
 
 **Done when** `author_emails` is present and holds at least one address, or the
 run has stopped with the rename spelled out.
@@ -86,16 +86,16 @@ Three flags carry the decisions:
   that are about to freeze.
 
 - **`--fixed-strings` — always, not conditionally.** Without it `--author` is a
-  regex, and every `.` in an address matches any character. Verified against
-  this repo: the pattern `…github.co.` matched all 11 commits (the trailing `.`
-  matching the `m`) and matched none under `--fixed-strings`. A configured
-  address can therefore count commits that are not that author's. This flag
-  makes matching a plain substring comparison, which is what the config means.
+  regex, and every `.` in an address matches any character. A pattern ending
+  `…github.co.` matches every commit from `…github.com`, its trailing `.`
+  standing in for the `m`; with the flag it matches none. A configured address
+  can therefore count commits that are not that author's. This flag makes
+  matching a plain substring comparison, which is what the config means.
 
   Matching stays a **substring** test even with `--fixed-strings` — it is not
-  anchored. A configured `hola@luisburgos.xyz` also matches a commit authored by
-  `not-hola@luisburgos.xyz.example`. Harmless for distinct addresses, worth
-  knowing before adding a short one.
+  anchored. A configured `dev@example.com` also matches a commit authored by
+  `other-dev@example.com.mx`. Harmless for distinct addresses, worth knowing
+  before adding a short one.
 
   De-duplicate by SHA across the identities anyway: git already collapses the OR
   to one row per commit, but a repo with mailmap rewriting or a re-run over
@@ -130,8 +130,8 @@ previous cycle's export. Find the newest completion timestamp in the export:
 
 > The newest completed task in `tasks.json` is 2026-07-28, before this cycle's
 > window (2026-08-03 to 2026-08-09). This export looks like a previous cycle's.
-> Re-export from Birdseye and replace the files, or confirm to proceed with git
-> only.
+> Re-export from your task tool and replace the files, or confirm to proceed
+> with git only.
 
 Count tasks completed inside the window, grouped by project.
 
