@@ -174,8 +174,8 @@ early on Sunday evenings, putting Sunday-night commits in the wrong cycle.
 
 **Git is required.** Config lists *roots to scan*, not individual repos, so a new
 repo is picked up without the config going stale. An exclude list covers archives
-and vendored clones. Commits are filtered to the configured author, merges
-excluded.
+and vendored clones. Commits are filtered to the configured authors — a list, so
+one person's several git identities across repos all count — merges excluded.
 
 **A task source is optional enrichment.** It is a seam, not a fixed file:
 collection asks for "tasks completed in this window". Today that is a hand-placed

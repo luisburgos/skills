@@ -19,7 +19,7 @@ so they cannot be bent toward it.
 
 ## 1. Resolve the cycle and its window
 
-Read `config.json` for the timezone, roots, excludes, and author email.
+Read `config.json` for the timezone, roots, excludes, and author emails.
 
 The cycle id is an ISO week (`2026-W32`), defaulting to the week just ended.
 Compute the window in the **configured timezone** — Monday 00:00:00 to Sunday
@@ -50,7 +50,7 @@ Per repo, over the window:
 
 ```sh
 git -C <repo> log \
-  --author="<author_email>" \
+  --author="<author_emails[0]>" --author="<author_emails[1]>" \
   --no-merges \
   --since="<window start>" --until="<window end>" \
   --date=iso-strict \
@@ -59,8 +59,19 @@ git -C <repo> log \
 
 Three flags carry the decisions:
 
-- `--author` — only the configured identity. A shared repo otherwise inflates
-  figures that are about to freeze.
+- `--author` — only the configured identities. **One flag per entry in
+  `author_emails`**; repeated `--author` flags OR together, so a commit matching
+  any configured address counts once. A shared repo otherwise inflates figures
+  that are about to freeze.
+
+  The value is a regex, not a literal — `.` matches any character, so two
+  addresses differing only by a dot cross-match. Escape the dots (or pair the
+  flags with `--fixed-strings`) when the configured addresses are close enough
+  for that to matter.
+
+  De-duplicate by SHA across the identities anyway: git already collapses the OR
+  to one row per commit, but a repo with mailmap rewriting or a re-run over
+  overlapping config can double-count, and the tally is about to freeze.
 - `--no-merges` — a merge commit is not a unit of work.
 - **`%ad` is the author date**, and `--since`/`--until` filter on it. Author date
   survives rebase; committer date does not, so a rebase in a later cycle would

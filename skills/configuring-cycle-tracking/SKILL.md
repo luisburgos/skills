@@ -41,8 +41,10 @@ Ask these together, with your best guess pre-filled, rather than one at a time:
   blind.
 - **Excludes** — paths under those roots to skip. Archive and vendored-clone
   directories belong here; commits in an archive are not this cycle's work.
-- **Author identity** — the git email whose commits count. Read
-  `git config user.email` and offer it.
+- **Author identities** — the git emails whose commits count, as a list. Read
+  `git config user.email` and offer it as the first entry. Ask whether other
+  repos use a different address (work address, `noreply` GitHub address, an
+  older personal one); each one missing here is commits silently uncounted.
 - **Timezone** — an IANA name (`America/Mexico_City`). Read the system zone and
   offer it. This decides which cycle a Sunday-night commit lands in.
 - **Task source** — optional. Whether a hand-placed export enriches the git
@@ -59,7 +61,7 @@ Ask these together, with your best guess pre-filled, rather than one at a time:
   "artifact_root": "cycles",
   "scan_roots": ["~/Work/Projects"],
   "exclude": ["~/Work/Archive"],
-  "author_email": "hola@luisburgos.xyz",
+  "author_emails": ["hola@luisburgos.xyz"],
   "task_source": {
     "kind": "drop-folder",
     "path": "cycles/raw-data",
