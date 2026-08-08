@@ -21,6 +21,26 @@ so they cannot be bent toward it.
 
 Read `config.json` for the timezone, roots, excludes, and author emails.
 
+**Stop before anything else when `author_emails` is missing, empty, or not a
+list.** Do not fall back to `git config user.email`, and do not run with no
+author filter.
+
+Both failure modes are silent in the same direction: an empty filter tallies
+zero commits, and a missing filter tallies *everyone's*. Neither raises an
+error, and a frozen cycle of `0` is indistinguishable from a quiet week.
+
+The old key was `author_email`, a single string. Name it in the message when you
+find it, since that is the likely cause and the fix is mechanical:
+
+> `config.json` has `author_email` (a string), which this skill no longer reads.
+> Rename it to `author_emails` and make it a list:
+> `"author_emails": ["hola@luisburgos.xyz"]`. Add any other addresses whose
+> commits should count — a work address, or a GitHub `noreply` address that
+> web-UI merges are attributed to. Then re-run.
+
+**Done when** `author_emails` is present and holds at least one address, or the
+run has stopped with the rename spelled out.
+
 The cycle id is an ISO week (`2026-W32`), defaulting to the week just ended.
 Compute the window in the **configured timezone** — Monday 00:00:00 to Sunday
 23:59:59 local, never UTC.
@@ -50,6 +70,7 @@ Per repo, over the window:
 
 ```sh
 git -C <repo> log \
+  --fixed-strings \
   --author="<author_emails[0]>" --author="<author_emails[1]>" \
   --no-merges \
   --since="<window start>" --until="<window end>" \
@@ -64,10 +85,17 @@ Three flags carry the decisions:
   any configured address counts once. A shared repo otherwise inflates figures
   that are about to freeze.
 
-  The value is a regex, not a literal — `.` matches any character, so two
-  addresses differing only by a dot cross-match. Escape the dots (or pair the
-  flags with `--fixed-strings`) when the configured addresses are close enough
-  for that to matter.
+- **`--fixed-strings` — always, not conditionally.** Without it `--author` is a
+  regex, and every `.` in an address matches any character. Verified against
+  this repo: the pattern `…github.co.` matched all 11 commits (the trailing `.`
+  matching the `m`) and matched none under `--fixed-strings`. A configured
+  address can therefore count commits that are not that author's. This flag
+  makes matching a plain substring comparison, which is what the config means.
+
+  Matching stays a **substring** test even with `--fixed-strings` — it is not
+  anchored. A configured `hola@luisburgos.xyz` also matches a commit authored by
+  `not-hola@luisburgos.xyz.example`. Harmless for distinct addresses, worth
+  knowing before adding a short one.
 
   De-duplicate by SHA across the identities anyway: git already collapses the OR
   to one row per commit, but a repo with mailmap rewriting or a re-run over
