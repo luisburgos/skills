@@ -11,10 +11,20 @@
     "skills",
     "authoring",
     "naming",
-    "conventions"
+    "conventions",
+    "weekly-review",
+    "goal-setting",
+    "continuous-improvement"
   ],
   "skills": [
     "./skills/drafting-release-notes",
-    "./skills/naming-skills"
+    "./skills/naming-skills",
+    "./skills/engineering-cycle-model",
+    "./skills/configuring-cycle-tracking",
+    "./skills/collecting-cycle-data",
+    "./skills/writing-cycle-review",
+    "./skills/assessing-cycle-goals",
+    "./skills/setting-cycle-goals",
+    "./skills/reviewing-cycle-trends"
   ]
 }
