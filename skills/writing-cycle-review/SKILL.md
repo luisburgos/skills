@@ -3,7 +3,6 @@ name: writing-cycle-review
 description: >
   Write the readable narrative of a cycle — charts and prose over the collected
   data, for the person who lived it.
-disable-model-invocation: true
 ---
 
 # Writing cycle review

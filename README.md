@@ -23,7 +23,8 @@ A skill reaches users only when it is both listed in
 [CLAUDE.md](./CLAUDE.md) for that invariant and the rest of the house rules.
 
 Entries are grouped by **invocation** — whether the model can reach a skill on
-its own, or only you can.
+its own, or only you can. Model-invoked is the default; user-invoked is the
+deliberate exception, marked `disable-model-invocation: true` in frontmatter.
 
 ### Model-invoked
 
@@ -35,21 +36,20 @@ Reachable by the model or by you.
 - **[naming-skills](./skills/naming-skills/SKILL.md)** — name a new skill, or
   audit existing names, against this repo's action/reference taxonomy.
 
-### User-invoked
-
-Reachable only by typing the name.
-
 The **engineering cycle** — a repeating, measured work cycle: collect what
 happened, review it, assess it against the goals the cycle started with, then set
 the next cycle's goals. The loop closes because the goals written at the end of
 one cycle are what the next is measured against. Adapted from Watts Humphrey's
 Personal Software Process, moved from task scale to cycle scale.
 
+Its four steps and the model they share are reachable by the model because
+something already gates them: each step runs behind a user-invoked facade that
+decides when the cycle advances. Putting the flag here too would not add a
+second gate, it would break the facade's ability to delegate.
+
 - **[engineering-cycle-model](./skills/engineering-cycle-model/SKILL.md)** — the
   shared model: the sequence, the artifact contract, and the rules the other six
   obey. Reference, not steps.
-- **[configuring-cycle-tracking](./skills/configuring-cycle-tracking/SKILL.md)**
-  — one-time setup: artifact root, repos to scan, task source, timezone.
 - **[collecting-cycle-data](./skills/collecting-cycle-data/SKILL.md)** — the
   mechanical half: git across the configured repos, plus an optional task export.
 - **[writing-cycle-review](./skills/writing-cycle-review/SKILL.md)** — the
@@ -58,6 +58,18 @@ Personal Software Process, moved from task scale to cycle scale.
   the cycle against its goals, score the estimates, and close it.
 - **[setting-cycle-goals](./skills/setting-cycle-goals/SKILL.md)** — draft the
   next cycle's goals with theory and practice confidence estimates.
+
+### User-invoked
+
+Reachable only by typing the name.
+
+The two cycle skills no facade covers. Nothing else decides when they run, so
+the gate has to be you.
+
+- **[configuring-cycle-tracking](./skills/configuring-cycle-tracking/SKILL.md)**
+  — one-time setup: artifact root, repos to scan, task source, timezone. It
+  writes the config every later tally reads, so a stray run would silently
+  redefine what every cycle is measured against.
 - **[reviewing-cycle-trends](./skills/reviewing-cycle-trends/SKILL.md)** — read
   across many cycles for carried goals, estimate calibration, and gaps.
 

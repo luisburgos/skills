@@ -3,7 +3,6 @@ name: setting-cycle-goals
 description: >
   Draft the next cycle's goals with theory and practice confidence estimates,
   and force a decision on any goal you are unlikely to actually do.
-disable-model-invocation: true
 ---
 
 # Setting cycle goals
