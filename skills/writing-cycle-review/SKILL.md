@@ -70,6 +70,15 @@ documentation style.
   a thin one.
 - Per-repo or per-project sections, a daily rhythm, the two gap callouts from
   step 3.
+- **Project colors come from `data.json`'s `projects` block** when it carries
+  one, so a chart uses the color the reader already recognizes the project by.
+  Fall back to a neutral grey for any project the block does not name, and treat
+  the block's absence as every project falling back — cycles frozen before the
+  field existed have none, and they must still render.
+
+Read the colors from the record, never from the source the record was collected
+from. Looking them up live would repaint an old cycle in today's palette, which
+is the same freeze this skill's figures obey.
 
 Name the quiet weeks as quiet. A review that finds a triumphant narrative in
 every cycle is one nobody will trust when it matters.

@@ -134,8 +134,28 @@ previous cycle's export. Find the newest completion timestamp in the export:
 
 Count tasks completed inside the window, grouped by project.
 
+### Carry the project colors
+
+The export resolves `projectId` to a name through a project list that also
+carries a **display color** per project. Carry that color into `data.json`
+alongside the tally, in a top-level `projects` block keyed by name.
+
+Record a project the cycle actually touched — one appearing in `tasks.by_project`
+or `commits.by_project`. A color for a project with no activity this cycle is
+noise in a frozen record.
+
+Colors are **collected, not invented**. A project the source has no color for is
+omitted from the block rather than assigned one here; the renderer owns the
+fallback. Do not de-duplicate colors that collide, and do not adjust them for
+contrast — the record reports what the source said, and a color edited at
+collection time would not match the tool the reader recognizes it from.
+
+This is why the color is frozen into the cycle rather than looked up when the
+review renders: re-rendering an old cycle must not repaint it in today's
+palette. Same rule as every other figure here.
+
 **Done when** the export is tallied, or its absence or staleness is stated
-explicitly.
+explicitly, and any colors the source carried are recorded.
 
 ## 5. Write `data.json`
 
@@ -160,6 +180,9 @@ explicitly.
     "export_newest": "2026-08-09",
     "total": 12,
     "by_project": { "netto": 8 }
+  },
+  "projects": {
+    "netto": { "color": "#00d18b" }
   }
 }
 ```
@@ -167,6 +190,19 @@ explicitly.
 Omit `tasks` when no source was configured. Record `repos_scanned` alongside
 `repos_touched` — a quiet cycle and a broken config produce the same commit
 count, and only these two numbers together tell them apart.
+
+`projects` is a **sibling** of the tallies, not a change to them. `by_project`
+stays a flat `{name: count}` dict, because several consumers read it that shape
+and none of them need the color. A reader wanting one project's color looks it
+up by the same name it already has.
+
+Omit the whole block when no source carried colors — git-only cycles have no
+project list to read them from. An absent block is normal, not a fault: every
+cycle frozen before this field existed lacks it, and they still render.
+
+Keying it by name rather than by the source's own id keeps `data.json` readable
+on its own and free of a foreign key pointing at a file it does not contain.
+The name is already the join key everywhere else in this record.
 
 **Done when** `data.json` exists in the cycle directory and its totals match the
 per-repo and per-day breakdowns. Re-add them and check rather than assuming the
