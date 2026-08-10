@@ -16,6 +16,23 @@ claude plugin marketplace add luisburgos/skills
 claude plugin install luisburgos-skills
 ```
 
+## Updating
+
+Refresh the marketplace first, then the plugin, then restart Claude Code:
+
+```sh
+claude plugin marketplace update luisburgos
+claude plugin update luisburgos-skills
+```
+
+**The order matters.** `plugin update` resolves against a cached copy of the
+marketplace manifest, so skipping the first command re-reads the stale cache and
+reports nothing to update — which looks identical to no release having shipped.
+
+`claude plugin list` confirms the installed version. Installs made with
+`--scope project` or `local` need the same `-s` on `plugin update`, which
+defaults to `user`.
+
 ## Skills
 
 A skill reaches users only when it is both listed in
