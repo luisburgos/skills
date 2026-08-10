@@ -3,7 +3,6 @@ name: assessing-cycle-goals
 description: >
   Measure a cycle against the goals it started with, score the estimates that
   were made, and close the cycle by appending to history.
-disable-model-invocation: true
 ---
 
 # Assessing cycle goals

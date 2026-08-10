@@ -47,6 +47,16 @@ Every skill is one of two kinds, and the choice is explicit:
 The test: *could the model usefully reach for this on its own?* Reuse is a
 reason to extract a skill, not a reason to make it model-invoked.
 
+The flag blocks **every** model path, not just auto-invocation — including one
+skill delegating to another. A skill that a facade is supposed to invoke must
+therefore stay model-invoked, even when a human never types its name; the gate
+lives on the facade instead. Flagging both levels does not double the protection,
+it breaks the delegation, and the work silently gets inlined by hand.
+
+Where the gate is a facade rather than the flag, record that in the README entry
+rather than the skill body — the facade often lives in a private repo, and a
+shipped skill should not depend on naming it.
+
 `SKILL.md` frontmatter is the **single source of truth** for invocation mode —
 there is no second file to keep in sync
 ([0001](./.agents/adr/0001-ship-as-a-claude-code-plugin.md)).

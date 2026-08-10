@@ -3,7 +3,6 @@ name: collecting-cycle-data
 description: >
   Collect what actually happened in a cycle — git across the configured repos,
   plus an optional task export — into the cycle's primary record.
-disable-model-invocation: true
 ---
 
 # Collecting cycle data

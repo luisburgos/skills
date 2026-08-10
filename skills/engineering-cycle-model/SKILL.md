@@ -4,7 +4,6 @@ description: >
   The shared model of the engineering cycle — the sequence, the artifact
   contract, and the rules every cycle skill obeys. Read before running any of
   them.
-disable-model-invocation: true
 ---
 
 # Engineering cycle model
