@@ -71,6 +71,7 @@ Per repo, over the window:
 git -C <repo> log \
   --fixed-strings \
   --author="<author_emails[0]>" --author="<author_emails[1]>" \
+  --first-parent \
   --no-merges \
   --since="<window start>" --until="<window end>" \
   --date=iso-strict \
@@ -99,6 +100,10 @@ Three flags carry the decisions:
   De-duplicate by SHA across the identities anyway: git already collapses the OR
   to one row per commit, but a repo with mailmap rewriting or a re-run over
   overlapping config can double-count, and the tally is about to freeze.
+- **`--first-parent`** — walk only the default branch's mainline. A merged
+  branch counts as the single commit that landed it, not every commit it carried.
+  Without it, a cycle that merges a long-lived branch shows a spike that measures
+  branch age, not the cycle's work.
 - `--no-merges` — a merge commit is not a unit of work.
 - **`%ad` is the author date**, and `--since`/`--until` filter on it. Author date
   survives rebase; committer date does not, so a rebase in a later cycle would
@@ -117,28 +122,90 @@ attributed to a local day inside the window.
 
 Skip entirely when `task_source` is absent. Git alone is a complete run.
 
-Read the configured files from the drop folder. Missing files are not an error —
-say so and continue with git.
+`config.json`'s `task_source` names how records reach the drop folder. This step
+reads **task and project records** from that folder and does not know or name the
+source that produced them. How a source is obtained and shaped — file locations,
+APIs, export quirks, fields dropped in normalization — lives with the adapter,
+not here. Read the configured files; missing files are not an error — say so and
+continue with git.
 
-**Check the export for staleness.** The files are hand-placed, so they can be a
-previous cycle's export. Find the newest completion timestamp in the export:
+### What a record must supply
+
+The step needs a small set of **roles** filled. **Match each role by its
+canonical key first; fall back to meaning if the key is absent.** A source that
+uses the canonical names is read deterministically; one that names things
+differently is still read, by description. Extra fields are ignored, never an
+error. Input is tolerant; the `data.json` this step writes is canonical.
+
+**Task identity** — the tally counts *distinct* tasks, so every task must be
+tellable from every other. One requirement, in order of preference:
+
+1. **Prefer a stable identifier** (`id`) — unique within the export, surviving
+   re-export; a renamed task keeps its id.
+2. **Fall back to the title** (the text role below) when no id exists. The title
+   then *is* the identity, at the cost that **two tasks sharing a title count as
+   one**. When you fall back this way, **say so** — "no stable ids; identical
+   titles counted once" — so the duplicate under-count is never silent.
+3. **Neither → the task cannot be counted.**
+
+Other task roles:
+
+| Role | Canonical key | Recognize by | Absent |
+|---|---|---|---|
+| completion time | `completed_at` | a date/datetime marking when the task was finished, ISO-8601 preferred | the task is **backlog** — out of every cycle |
+| done signal | `done` | a boolean-ish "finished" flag | treat as not done |
+| project reference | `project_id` | points the task at its project's identifier | **untagged** |
+| text | `title` | the human-readable title; doubles as identity fallback when no `id` | with no id either, cannot be counted |
+
+**Project identity** — everything downstream keys projects by **name**
+(`by_project`, the color block, every chart), so a project must resolve to a name:
+
+1. **Prefer a stable identifier** (`id`) — the value a task's project reference
+   points at.
+2. **Fall back to the name** (the name role below) when no id exists.
+3. **Neither → skip the project**, and untag any task that pointed at it.
+
+One difference from tasks, because the name is itself the key: a project with an
+id but no name uses the **id as its name** — the join still works, the record
+just reads by an opaque key.
+
+Other project roles:
+
+| Role | Canonical key | Recognize by | Absent |
+|---|---|---|---|
+| name | `name` | the display name, and the downstream join key; doubles as identity fallback when no `id` | with no id either, cannot be named — skip it |
+| color | `color` | a display color for the project | omitted; the renderer owns the fallback |
+
+### How a task maps to a cycle
+
+A task's cycle is the ISO week — in the configured timezone — that contains its
+**completion time**. A task with no completion time belongs to no cycle; it is
+backlog. Its day within the cycle is the weekday of that same completion time,
+clamped to the window. Week, day, and backlog are all read off the one timestamp;
+there is no separate stored week to trust. A source may carry its own week field —
+it is ignored, because deriving from the completion time is what keeps a task from
+drifting between when it was filed and when it was finished.
+
+### Staleness
+
+The files are hand-placed, so they can be a previous cycle's export. Find the
+newest completion time present:
 
 - Inside the window → proceed.
 - **Before the window** → warn loudly and stop for confirmation. A stale export
   freezes wrong figures permanently once the cycle is assessed.
 
-> The newest completed task in `tasks.json` is 2026-07-28, before this cycle's
+> The newest completion time in the export is 2026-07-28, before this cycle's
 > window (2026-08-03 to 2026-08-09). This export looks like a previous cycle's.
-> Re-export from your task tool and replace the files, or confirm to proceed
-> with git only.
+> Re-export and replace the files, or confirm to proceed with git only.
 
 Count tasks completed inside the window, grouped by project.
 
 ### Carry the project colors
 
-The export resolves `projectId` to a name through a project list that also
-carries a **display color** per project. Carry that color into `data.json`
-alongside the tally, in a top-level `projects` block keyed by name.
+Each task's project reference resolves to a name through the project records,
+which also carry a **color** role. Carry that color into `data.json` alongside the
+tally, in a top-level `projects` block keyed by name.
 
 Record a project the cycle actually touched — one appearing in `tasks.by_project`
 or `commits.by_project`. A color for a project with no activity this cycle is
@@ -204,9 +271,19 @@ Keying it by name rather than by the source's own id keeps `data.json` readable
 on its own and free of a foreign key pointing at a file it does not contain.
 The name is already the join key everywhere else in this record.
 
-**Done when** `data.json` exists in the cycle directory and its totals match the
-per-repo and per-day breakdowns. Re-add them and check rather than assuming the
-tally was right.
+**Done when** `data.json` exists in the cycle directory and its totals
+reconcile. Re-add the breakdowns and check rather than assuming the tally was
+right: per-repo and per-day sums against `commits.total`, per-project against
+`tasks.total`.
+
+Expect **one** legitimate inequality. Because `by_day` is window-clamped (§4), a
+task completed inside the cycle but stamped outside the day-window counts in
+`tasks.total` and in `by_project`, yet not in `by_day`. So `sum(by_day)` is `≤
+tasks.total` by design — never force the sums to agree. Any *other* divergence is
+a collection bug: stop and surface it, because these numbers freeze at assessment.
+
+This reconciliation is the record's own guarantee. Downstream skills read
+`data.json` trusting it already reconciles; they do not re-tally it.
 
 ## 6. Report and point onward
 

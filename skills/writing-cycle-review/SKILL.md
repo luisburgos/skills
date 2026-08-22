@@ -28,17 +28,16 @@ independent tally would be a second answer to a question that already has one.
 
 **Done when** `data.json` is loaded and its cycle id matches the one requested.
 
-## 2. Re-tally before narrating
+## 2. Trust the record; do not re-tally
 
-Independently re-add the totals from the breakdowns: per-repo and per-day sums
-against `commits.total`, per-project against `tasks.total`.
+`collecting-cycle-data` reconciles `data.json` before writing it — its totals
+already match their breakdowns, and the one legitimate inequality (`by_day` sums
+`≤ tasks.total`, by design) is accounted for there. Narrate from those figures as
+given. A second independent tally here would be a second answer to a question the
+primary record already settled.
 
-Divergence means a collection bug. **Stop and surface it** rather than narrating
-around it — the numbers here are the ones that freeze at assessment, and a review
-that quietly disagrees with the primary record is worse than no review.
-
-**Done when** every total reconciles, or a mismatch is reported and the run
-stops.
+If a figure looks wrong, that is a collection bug upstream — stop and point at
+`collecting-cycle-data`, do not narrate around it or silently correct it here.
 
 ## 3. Find what the numbers alone miss
 
