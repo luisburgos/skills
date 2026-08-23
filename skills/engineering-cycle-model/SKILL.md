@@ -180,3 +180,41 @@ one person's several git identities across repos all count — merges excluded.
 collection asks for "tasks completed in this window". Today that is a hand-placed
 export in `<root>/raw-data/`; a different source later is a config change, not a
 redesign.
+
+## Facades and overrides
+
+The four step skills above are the portable machinery. Three **facades** wrap them
+into the commands a person actually runs, each user-invoked:
+
+```
+recap     → collecting-cycle-data + writing-cycle-review   (close the record)
+recheck   → assessing-cycle-goals                          (close the cycle)
+reaim     → setting-cycle-goals                             (point the next)
+```
+
+A facade owns only orchestration: resolve the cycle id, get inputs into place,
+delegate, report. It holds no tally or judgment logic — that lives in the step
+skills, which own and reconcile their own output.
+
+**What varies between one consumer and the next is a config pointer with a
+default.** A facade reads the pointer or falls back to its shipped default; the
+step skills it delegates to never see the pointer, only the resolved input. This
+keeps the steps presentation-agnostic and the source-specific parts out of the
+portable machinery.
+
+The optional pointers, all under `config.json`:
+
+| Pointer | Overrides | Default when absent |
+|---|---|---|
+| `task_source.adapter_doc` | how records reach the drop folder | a hand-placed export already in `task_source.path` |
+| `review.template` + `review.field_map` | the review's output shape | `writing-cycle-review` renders its own self-contained HTML |
+| `assessment.format` | the assessment note's prose shape | the global's own structure |
+| `assessment.verify` | the verify discipline recheck follows | `recheck`'s shipped `reference/verify.md` |
+| `goals.format` | the goals note's prose shape | the global's own structure |
+| `goals.constraints` | the drafting discipline reaim holds | `reaim`'s shipped `reference/constraints.md` |
+
+A consumer that names nothing gets a working loop with default behavior. A
+consumer with a house style, a branded review, or a source behind an access wall
+names the files that encode those, and the same facades run against them
+unchanged. The source-specific and style-specific material lives with that
+consumer, never in the shipped skills.
