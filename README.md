@@ -80,9 +80,19 @@ second gate, it would break the facade's ability to delegate.
 
 Reachable only by typing the name.
 
-The two cycle skills no facade covers. Nothing else decides when they run, so
-the gate has to be you.
+The three cycle **facades** — each wrapping the step skills into a command you run
+— plus the two cycle skills no facade covers. Nothing else decides when these run,
+so the gate has to be you.
 
+- **[recap](./skills/recap/SKILL.md)** — close a finished cycle's record: collect
+  what happened, then optionally write the review. Facade over
+  `collecting-cycle-data` and `writing-cycle-review`.
+- **[recheck](./skills/recheck/SKILL.md)** — close a cycle against its goals: judge
+  each, score the estimates, write the assessment, freeze the history row. Facade
+  over `assessing-cycle-goals`.
+- **[reaim](./skills/reaim/SKILL.md)** — set the coming cycle's goals with theory
+  and practice estimates, carrying or dropping what did not land. Facade over
+  `setting-cycle-goals`.
 - **[configuring-cycle-tracking](./skills/configuring-cycle-tracking/SKILL.md)**
   — one-time setup: artifact root, repos to scan, task source, timezone. It
   writes the config every later tally reads, so a stray run would silently

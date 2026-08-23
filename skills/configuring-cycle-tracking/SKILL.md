@@ -79,6 +79,12 @@ self-describing when a second unit becomes supportable, not because one exists.
 Omit `task_source` entirely when the user declines it. Git alone is a complete
 configuration.
 
+The facades (`recap`/`recheck`/`reaim`) read **optional override pointers** from
+this file — `task_source.adapter_doc`, `review.template`/`review.field_map`,
+`assessment.format`/`assessment.verify`, `goals.format`/`goals.constraints`. Omit
+them all for default behavior; see `engineering-cycle-model`, *Facades and
+overrides*, for what each one replaces. Setup does not need to write any of them.
+
 **Done when** `config.json` exists at the root and every path in it resolves.
 
 ## 4. Create the directories and the empty history
