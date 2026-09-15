@@ -116,6 +116,7 @@ rebuild.
     {
       "id": "g-7f3a",
       "title": "…",
+      "plan": ["…", "…", "…"],
       "estimate": { "theory": 95, "practice": 20 },
       "outcome": "missed",
       "carried_from": "2026-W31"
@@ -137,12 +138,33 @@ that was reworded and expanded every cycle while never being started. Text
 matching fails on exactly that case. An id keeps its identity while its text
 changes.
 
+## The plan
+
+Every goal carries a **plan**: the three to five major moves that would produce
+the result. It is written before the estimate, because it is what the estimate
+is about.
+
+A goal with no written plan cannot be estimated, only guessed at. The estimate
+then lands on the only thing on the page, which is the title, and a number
+attached to a title is an impression with two decimal places.
+
+`2026-W37` is the worked example. Three goals scored practice 80, 85 and 80, and
+all three missed. The goals were not the problem; there were no plans, so the
+scores described how the titles felt.
+
 ## The confidence estimate
 
-Every goal carries two numbers, set when the goal is written:
+Every goal carries two numbers, set when the goal is written. **Both take the
+plan as their subject, not the goal**:
 
-- **Theory** — will these steps produce the result? A question about the world.
-- **Practice** — will I actually do them? A question about the person.
+- **Theory** — assuming the plan is followed to 100% accuracy, does it reach the
+  goal? A question about the world.
+- **Practice** — will I actually follow the plan? A question about the person.
+
+Estimating the goal instead hides the diagnosis, because an easy goal scores well
+while the plan under it is fragile. A trivial goal with no tracking, no
+accountability and no protected time can score 85 on a reading of the goal and
+still register nothing.
 
 Below 80 on either axis means stop and fix **that** axis. Sharpening a plan that
 already scores 95 on theory is effort aimed at the number that was never the
