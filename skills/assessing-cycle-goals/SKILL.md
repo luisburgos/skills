@@ -101,18 +101,31 @@ deserve explicit attention: a goal appearing for the third time with practice
 still low is the exact shape the family exists to catch, and burying it in a
 per-goal list is how it survived three cycles before.
 
-**Done when** `assessment.md` exists in the cycle directory and every goal from
-`goals.md` appears in it.
+**This document is where corrections live.** Where an already-closed cycle is
+being corrected, record the amendment here: which goals changed, what they said
+before, who directed the change, and when. A document that quietly shows the
+corrected outcome tells nobody it was ever revised, and the reader has no way to
+know the difference.
+
+**Done when** `assessment.md` exists in the cycle directory, every goal from
+`goals.md` appears in it, and any correction to an earlier close is recorded with
+its prior value.
 
 ## 6. Append the history row and close
 
 Append **one line** to `history.jsonl` — the row shape is in
-`weekly-cycle-model`. It carries goal ids, titles, estimates, outcomes,
-`carried_from` where set, and the measured figures from `data.json`.
+`weekly-cycle-model`. It carries goal ids, titles, plans, estimates, outcomes,
+`carried_from` where set, the `method` the cycle was set with, and the measured
+figures from `data.json`.
 
-Append only. Never edit an existing row. If a past row is wrong, append an
-amendment row that says so explicitly — a silent rebuild makes every earlier
-trend report unreproducible.
+Every field is copied from the artifacts, never recomputed. The row is an index
+entry, so anything in it that disagrees with `goals.md`, `assessment.md` or
+`data.json` is a bug in the row.
+
+**Correcting a closed cycle happens in `assessment.md`, not here.** Record what
+changed, what it was before, and who directed it, then rebuild the row from the
+corrected artifact. Putting the correction only in the index leaves the document
+asserting something nobody can tell was revised.
 
 Verify before writing: the row is valid JSON on a single line, its goal ids match
 `goals.md`, and its measured figures match `data.json`.

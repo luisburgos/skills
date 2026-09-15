@@ -102,17 +102,19 @@ Two things freeze at different moments, because they are different in kind:
   principle — but git mutates under rebase, force-push, and moved repos. A
   re-derivation months later can silently produce a different number.
 
-Correcting a closed cycle is an **explicit amendment row**, never a silent
-rebuild.
+Correcting a closed cycle is an **explicit amendment recorded in
+`assessment.md`**, never a silent edit. The artifact carries its own corrections,
+so what was changed and why survives in the document that made the claim.
 
 ## History
 
-`history.jsonl` is the freeze target, one row per cycle:
+`history.jsonl` is a **derived index**, one row per cycle:
 
 ```json
 {
   "cycle": "2026-W32",
   "unit": "iso-week",
+  "method": "gps",
   "goals": [
     {
       "id": "g-7f3a",
@@ -127,7 +129,26 @@ rebuild.
 }
 ```
 
-Rows are **appended**, never edited.
+**The cycle artifacts are the source of truth; this file is the fast read across
+them.** Every field above comes from `goals.md`, `assessment.md` and `data.json`,
+which are frozen once the cycle closes. Nothing lives here alone.
+
+That is what makes it **rebuildable**. A row is normally appended at close, but
+the whole file can be regenerated from the closed artifacts when it drifts, and
+it does drift: a renamed key in `measured` or an assessment written in an older
+shape leaves rows that no longer agree with each other. An append-only record
+cannot be repaired; an index can.
+
+Rebuilding is not re-deriving. **Never recompute figures from git**, which mutates
+under rebase and moved repos. Rebuild only by reading what the closed artifacts
+already say.
+
+`method` names the goal-drafting method the cycle was set with, `unspecified`
+where none was declared. It is recorded for the same reason as `unit`: so rows
+stay self-describing. Theory and practice mean different things under a method
+that estimates the plan than under one that estimates the goal, so calibration is
+compared **within** a method, never across a change of one. Carry counts and gaps
+still cross the boundary, because they depend on the id, which is contract.
 
 ## Goal identity
 
