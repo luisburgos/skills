@@ -45,7 +45,8 @@ week early on Sunday evenings and files Sunday-night commits in the wrong cycle.
 
 ## 2. Place the task export
 
-Skip when no task source is configured — git alone is a complete run.
+Skip when no task source is configured: git alone is a complete run, just as a
+task source alone is a complete run when there is no git.
 
 `config.json`'s `task_source` names how records reach the drop folder. The
 **default** is a hand-placed export already sitting in `task_source.path`: nothing

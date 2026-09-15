@@ -19,9 +19,10 @@ the name.
 **The cycle is domain-agnostic.** Nothing here knows what kind of work a goal
 is. A goal can be a refactor, a portfolio sale, a job application or a health
 habit, and the machinery treats them identically: an id, a plan, two estimates,
-an outcome. Git is required as file version control for the artifacts, not as a
-claim that the work is engineering. A commit count therefore measures only the
-goals that happen to produce commits.
+an outcome. Where git is used it is file version control for the artifacts, not
+a claim that the work is engineering, and a commit count therefore measures only
+the goals that happen to produce commits. See *Sources* for when it is used at
+all.
 
 This is doctrine, not commands. The six action skills run the steps; this holds
 what they agree on.
@@ -204,15 +205,36 @@ early on Sunday evenings, putting Sunday-night commits in the wrong cycle.
 
 ## Sources
 
-**Git is required.** Config lists *roots to scan*, not individual repos, so a new
-repo is picked up without the config going stale. An exclude list covers archives
-and vendored clones. Commits are filtered to the configured authors — a list, so
-one person's several git identities across repos all count — merges excluded.
+**Git is strongly recommended, not required.** Where it exists it is the cheapest
+honest record of a week: it was written as the work happened, not reconstructed
+on Sunday from memory. Config lists *roots to scan*, not individual repos, so a
+new repo is picked up without the config going stale. An exclude list covers
+archives and vendored clones. Commits are filtered to the configured authors, a
+list, so one person's several git identities across repos all count, merges
+excluded.
+
+Where git is absent, **offer to help install and set it up**, and say plainly
+what it buys: a record that cannot be bent toward the plan afterwards. If the
+user declines, the loop still runs. Goals, plans, estimates, the gate and the
+assessment do not depend on a commit ever existing.
+
+What a git-less cycle loses is the mechanical half of the evidence, so
+`data.json` carries whatever sources are configured and the assessment leans on
+the task source and the user's own account. That is weaker, and the assessment
+should say so rather than presenting it as measured fact.
+
+**A commit count is not a measure of a cycle.** It counts the goals that happen
+to produce commits and is blind to the rest. A week of 91 commits alongside three
+missed goals is a real and ordinary result, not a contradiction.
 
 **A task source is optional enrichment.** It is a seam, not a fixed file:
 collection asks for "tasks completed in this window". Today that is a hand-placed
 export in `<root>/raw-data/`; a different source later is a config change, not a
 redesign.
+
+**At least one source must be configured.** Git, a task source, or both. A cycle
+with no sources at all has nothing to assess against and the loop cannot close
+honestly.
 
 ## Facades and overrides
 

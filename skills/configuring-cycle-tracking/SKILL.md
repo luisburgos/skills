@@ -36,6 +36,19 @@ Ask these together, with your best guess pre-filled, rather than one at a time:
 
 - **Artifact root** — where cycle directories live. Default: a `cycles/`
   directory in the current repo.
+- **Timezone** — an IANA name (`America/Mexico_City`). Read the system zone and
+  offer it. This decides which cycle a Sunday-night commit lands in.
+- **Git** — whether cycles should count commits. Strongly recommended where the
+  user's work touches a repo, because it is a record written as the work
+  happened rather than reconstructed afterwards. See below when git is not
+  installed or the user declines.
+- **Task source** — whether a hand-placed export feeds the record.
+
+At least one of git and a task source must be configured. Neither leaves nothing
+to assess against.
+
+When git is in:
+
 - **Roots to scan for git repos** — directories to walk, not individual repos.
   Look at the user's filesystem for plausible candidates rather than guessing
   blind.
@@ -45,10 +58,22 @@ Ask these together, with your best guess pre-filled, rather than one at a time:
   `git config user.email` and offer it as the first entry. Ask whether other
   repos use a different address (work address, `noreply` GitHub address, an
   older personal one); each one missing here is commits silently uncounted.
-- **Timezone** — an IANA name (`America/Mexico_City`). Read the system zone and
-  offer it. This decides which cycle a Sunday-night commit lands in.
-- **Task source** — optional. Whether a hand-placed export enriches the git
-  record.
+
+### When git is missing
+
+Check whether it is installed (`git --version`). If it is not, **offer to help
+install and set it up** rather than quietly configuring around it: on macOS
+`xcode-select --install` or Homebrew, on Linux the distribution's package
+manager. Setting up afterwards means `git config user.name` and
+`user.email`, and `git init` wherever the work lives.
+
+Say what it buys in one line: the cycle's figures come from a record written as
+the work happened, so they cannot be reshaped later to fit the plan.
+
+A user who declines gets a working loop. Configure the task source instead and
+leave `scan_roots`, `exclude` and `author_emails` out of the config entirely.
+Do not write them empty, since an empty author list and a missing one are the
+two silent failure modes `collecting-cycle-data` stops on.
 
 **Done when** every field has a value the user has seen and accepted.
 
@@ -76,8 +101,10 @@ Ask these together, with your best guess pre-filled, rather than one at a time:
 `unit` is `iso-week` and nothing else — it is recorded so history rows stay
 self-describing when a second unit becomes supportable, not because one exists.
 
-Omit `task_source` entirely when the user declines it. Git alone is a complete
-configuration.
+Omit `task_source` entirely when the user declines it, and omit `scan_roots`,
+`exclude` and `author_emails` when there is no git. Either source alone is a
+complete configuration; **neither is not**, since a cycle with no sources has
+nothing to assess against.
 
 The facades (`recap`/`recheck`/`reaim`) read **optional override pointers** from
 this file — `task_source.adapter_doc`, `review.template`/`review.field_map`,
