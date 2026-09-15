@@ -6,7 +6,7 @@ The rule that produced this file: **the review is not a source.**
 compresses. A compressed figure is not evidence. The assessment is the artifact
 that checks claims, so it does not get to inherit them.
 
-This is the trust seam from `engineering-cycle-model`, applied. It is not
+This is the trust seam from `weekly-cycle-model`, applied. It is not
 optional care: the review's compression produces plausible wrong figures as a
 matter of course, and they freeze into history looking exactly like correct ones.
 

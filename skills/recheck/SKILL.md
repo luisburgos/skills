@@ -19,7 +19,7 @@ assessing-cycle-goals   → <cycle>/assessment.md
 ```
 
 **This is a facade.** The doctrine — the freeze rules, the history row shape, the
-estimate axes — lives in the `engineering-cycle-model` skill. Read it first. This
+estimate axes — lives in the `weekly-cycle-model` skill. Read it first. This
 file owns the verify discipline and the orchestration.
 
 Closing is irreversible in practice. The appended row is what every trend reads,

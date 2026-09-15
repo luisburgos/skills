@@ -10,7 +10,7 @@ description: >
 Mechanical. Produces `data.json`, the **primary record** every downstream figure
 traces back to.
 
-Consult the `engineering-cycle-model` skill for the layout, the time rules, and
+Consult the `weekly-cycle-model` skill for the layout, the time rules, and
 the trust seam this skill anchors.
 
 **This skill never reads `goals.md`.** The facts are gathered blind to the plan,

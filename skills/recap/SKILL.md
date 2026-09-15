@@ -9,8 +9,7 @@ disable-model-invocation: true
 
 # Recap
 
-Closes out a cycle's record. Two steps of the engineering cycle, run back to
-back:
+Closes out a cycle's record. Two steps of the weekly cycle, run back to back:
 
 ```
 collecting-cycle-data   → <cycle>/data.json     (mechanical, goal-blind)
@@ -18,7 +17,7 @@ writing-cycle-review    → <cycle>/review.html   (optional, narrative)
 ```
 
 **This is a facade.** The doctrine — the trust seam, the freeze rules, the time
-rules — lives in the `engineering-cycle-model` skill. Read it first. This file
+rules — lives in the `weekly-cycle-model` skill. Read it first. This file
 owns only the orchestration: resolve the cycle, get the task export into place,
 delegate, report.
 

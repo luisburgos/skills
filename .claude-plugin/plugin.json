@@ -19,7 +19,7 @@
   "skills": [
     "./skills/drafting-release-notes",
     "./skills/naming-skills",
-    "./skills/engineering-cycle-model",
+    "./skills/weekly-cycle-model",
     "./skills/configuring-cycle-tracking",
     "./skills/collecting-cycle-data",
     "./skills/writing-cycle-review",

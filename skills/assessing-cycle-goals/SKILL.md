@@ -11,7 +11,7 @@ The skill that **closes** a cycle. It compares `goals.md` against `data.json`,
 scores how well the estimates predicted reality, writes `assessment.md`, and
 appends a frozen row to `history.jsonl`.
 
-Consult the `engineering-cycle-model` skill for the freeze rules, the history
+Consult the `weekly-cycle-model` skill for the freeze rules, the history
 row shape, and the estimate axes.
 
 Closing is irreversible in practice: the row it appends is what every trend
@@ -107,7 +107,7 @@ per-goal list is how it survived three cycles before.
 ## 6. Append the history row and close
 
 Append **one line** to `history.jsonl` — the row shape is in
-`engineering-cycle-model`. It carries goal ids, titles, estimates, outcomes,
+`weekly-cycle-model`. It carries goal ids, titles, estimates, outcomes,
 `carried_from` where set, and the measured figures from `data.json`.
 
 Append only. Never edit an existing row. If a past row is wrong, append an

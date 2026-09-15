@@ -1,16 +1,27 @@
 ---
-name: engineering-cycle-model
+name: weekly-cycle-model
 description: >
-  The shared model of the engineering cycle — the sequence, the artifact
-  contract, and the rules every cycle skill obeys. Read before running any of
-  them.
+  The shared model of the weekly cycle — the sequence, the artifact contract,
+  and the rules every cycle skill obeys. Read before running any of them.
 ---
 
-# Engineering cycle model
+# Weekly cycle model
 
 A **cycle** is one ISO week of work, measured against goals written before it
 started. The loop closes because the goals set at the end of one cycle are what
 the next cycle is graded against.
+
+The week is not a parameter. The cycle id **is** the ISO week, it sorts
+chronologically because it sorts lexicographically, and prior-cycle resolution
+is a directory listing rather than date arithmetic. That is why the unit is in
+the name.
+
+**The cycle is domain-agnostic.** Nothing here knows what kind of work a goal
+is. A goal can be a refactor, a portfolio sale, a job application or a health
+habit, and the machinery treats them identically: an id, a plan, two estimates,
+an outcome. Git is required as file version control for the artifacts, not as a
+claim that the work is engineering. A commit count therefore measures only the
+goals that happen to produce commits.
 
 This is doctrine, not commands. The six action skills run the steps; this holds
 what they agree on.

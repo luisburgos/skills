@@ -17,7 +17,7 @@ setting-cycle-goals   → <cycle>/goals.md
 ```
 
 **This is a facade.** The doctrine — the estimate axes, goal identity, the gates —
-lives in the `engineering-cycle-model` skill. Read it first. This file owns the
+lives in the `weekly-cycle-model` skill. Read it first. This file owns the
 drafting discipline and the orchestration.
 
 **Aiming, not resetting.** The `re-` is the point: the cycle is not starting from

@@ -10,7 +10,7 @@ description: >
 Writes `goals.md` for the cycle about to start. Owns the goals format, the
 confidence estimate, and the gate that fires when a goal is unlikely to happen.
 
-Consult the `engineering-cycle-model` skill for the estimate axes, goal identity,
+Consult the `weekly-cycle-model` skill for the estimate axes, goal identity,
 and the gates.
 
 This is where the loop is armed. Everything downstream measures against what gets

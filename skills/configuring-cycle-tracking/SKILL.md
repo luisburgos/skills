@@ -11,7 +11,7 @@ disable-model-invocation: true
 Sets up the artifact root, the repos to scan, the task source, and the timezone.
 Writes two files and stops.
 
-Consult the `engineering-cycle-model` skill for the layout and the loop this
+Consult the `weekly-cycle-model` skill for the layout and the loop this
 config feeds.
 
 This skill does **not** write goals. `setting-cycle-goals` owns the goals format
@@ -82,7 +82,7 @@ configuration.
 The facades (`recap`/`recheck`/`reaim`) read **optional override pointers** from
 this file — `task_source.adapter_doc`, `review.template`/`review.field_map`,
 `assessment.format`/`assessment.verify`, `goals.format`/`goals.constraints`. Omit
-them all for default behavior; see `engineering-cycle-model`, *Facades and
+them all for default behavior; see `weekly-cycle-model`, *Facades and
 overrides*, for what each one replaces. Setup does not need to write any of them.
 
 **Done when** `config.json` exists at the root and every path in it resolves.

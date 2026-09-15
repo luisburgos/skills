@@ -11,7 +11,7 @@ disable-model-invocation: true
 The loop's memory. Every other skill reads one cycle; this one reads the whole
 history and reports. It writes nothing.
 
-Consult the `engineering-cycle-model` skill for the history row shape and goal
+Consult the `weekly-cycle-model` skill for the history row shape and goal
 identity.
 
 Run it any time — it sits outside the closing sequence. It has little to say

@@ -10,7 +10,7 @@ description: >
 Interpretive. Turns `data.json` into `review.html` — the record of a cycle you
 actually read.
 
-Consult the `engineering-cycle-model` skill for the layout and the trust seam.
+Consult the `weekly-cycle-model` skill for the layout and the trust seam.
 
 Two facts shape how much rigour this needs:
 
