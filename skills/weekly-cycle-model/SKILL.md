@@ -150,6 +150,35 @@ that estimates the plan than under one that estimates the goal, so calibration i
 compared **within** a method, never across a change of one. Carry counts and gaps
 still cross the boundary, because they depend on the id, which is contract.
 
+### Archiving instead of rebuilding
+
+"Nothing lives here alone" is the intent, and it can stop being true. A cycle
+closed under an older assessment shape may hold goals, estimates and outcomes
+that reached no artifact, and a correction recorded only as a row leaves the
+assessment showing a revised outcome with no sign it was revised. Rows like those
+are no longer an index of anything.
+
+**The test: if rebuilding a row would need a closed cycle edited to supply what
+it is missing, archive rather than rebuild.** Repairing the artifact is the worse
+trade. Freezing exists so a closed cycle stops moving, and reopening one to feed
+the index inverts which of the two serves the other.
+
+Archive by renaming the file so the name says what it holds, for example
+`history.legacy.jsonl`, and start an empty `history.jsonl`. Copy it byte for
+byte, leave every closed cycle untouched, and record the boundary somewhere a
+reader will find it: which cycles are in which file, and what changed at the cut.
+
+`reviewing-cycle-trends` reads only the live index, so it sees nothing before the
+cut until cycles accumulate again. That is the cost, and it is smaller than it
+looks where the cut coincides with a change of method, since calibration should
+not span one anyway. Carry counts legitimately would, and they survive in each
+goal's own `carried_from` and `carry_count`, which is where the fact is recorded
+first-hand.
+
+A cut is a real event in the practice, so it is worth being able to name why it
+happened. Archive on a change of method or an unrebuildable row, not to tidy a
+file that has simply grown long.
+
 ## Goal identity
 
 Every goal carries a **stable id**. Carrying a goal into a new cycle copies its
