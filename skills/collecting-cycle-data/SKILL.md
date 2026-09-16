@@ -10,7 +10,7 @@ description: >
 Mechanical. Produces `data.json`, the **primary record** every downstream figure
 traces back to.
 
-Consult the `engineering-cycle-model` skill for the layout, the time rules, and
+Consult the `weekly-cycle-model` skill for the layout, the time rules, and
 the trust seam this skill anchors.
 
 **This skill never reads `goals.md`.** The facts are gathered blind to the plan,
@@ -20,9 +20,14 @@ so they cannot be bent toward it.
 
 Read `config.json` for the timezone, roots, excludes, and author emails.
 
-**Stop before anything else when `author_emails` is missing, empty, or not a
-list.** Do not fall back to `git config user.email`, and do not run with no
-author filter.
+**A config with no `scan_roots` has no git by design.** Skip this check, record
+the git figures as absent rather than zero, and collect from the task source
+alone. Git is recommended, not required, so its deliberate absence is a
+configuration rather than a fault.
+
+Where `scan_roots` is present, **stop before anything else when `author_emails`
+is missing, empty, or not a list.** Do not fall back to `git config user.email`,
+and do not run with no author filter.
 
 Both failure modes are silent in the same direction: an empty filter tallies
 zero commits, and a missing filter tallies *everyone's*. Neither raises an
@@ -53,15 +58,21 @@ and the user has confirmed the cycle if it was not the one just ended.
 
 ## 2. Find the repos
 
-Walk each `scan_roots` entry for directories containing `.git`. Drop anything
-under `exclude`.
+**When the config has no `scan_roots`, skip to the task source.** Git is
+recommended but not required, and a configuration without it is deliberate rather
+than broken. Record the git figures as absent, not as zero: nothing was measured,
+which is different from nothing having happened.
+
+Otherwise walk each `scan_roots` entry for directories containing `.git`. Drop
+anything under `exclude`.
 
 Scanning roots rather than listing repos is what keeps a new project from going
 uncounted. Report the repo list — a root that resolves to nothing is a config
 error worth surfacing now, not after the figures are frozen.
 
 **Done when** every scanned root has produced its repo list, exclusions are
-applied, and the count is reported.
+applied, and the count is reported; or the config declares no git and that is
+recorded.
 
 ## 3. Tally git
 
@@ -120,7 +131,8 @@ attributed to a local day inside the window.
 
 ## 4. Read the task export, if configured
 
-Skip entirely when `task_source` is absent. Git alone is a complete run.
+Skip entirely when `task_source` is absent. Git alone is a complete run, just as
+a task source alone is a complete run when there is no git.
 
 `config.json`'s `task_source` names how records reach the drop folder. This step
 reads **task and project records** from that folder and does not know or name the

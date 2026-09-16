@@ -11,7 +11,7 @@ disable-model-invocation: true
 The loop's memory. Every other skill reads one cycle; this one reads the whole
 history and reports. It writes nothing.
 
-Consult the `engineering-cycle-model` skill for the history row shape and goal
+Consult the `weekly-cycle-model` skill for the history row shape and goal
 identity.
 
 Run it any time — it sits outside the closing sequence. It has little to say
@@ -22,19 +22,29 @@ starts empty and fills honestly.
 
 Read `history.jsonl`. Each line is one closed cycle.
 
-Rows are the frozen record. Do not re-derive figures from git or from cycle
-directories to "check" them — a re-derivation months later legitimately differs
-(rebases, moved repos), and treating that difference as an error would relitigate
-every closed cycle.
+Rows index the closed artifacts. **Never recompute figures from git** to "check"
+them: a re-derivation months later legitimately differs under rebases and moved
+repos, and treating that difference as an error would relitigate every closed
+cycle. Where a row disagrees with the artifacts it indexes, the artifacts win and
+the row is rebuilt from them.
 
 **Segment by `unit` before comparing anything.** A practice score of 70 means
 different things at different cycle scales. Only `iso-week` exists today, so this
 is one check, not a computation — but comparing across units silently is the
 failure it prevents.
 
-Honour amendment rows: a later row correcting an earlier one supersedes it.
+**Segment by `method` before comparing estimates.** Theory and practice mean
+different things under a method that estimates the plan than under one that
+estimates the goal, so a calibration count that spans a change of method is
+measuring two instruments at once. Report the segments separately and say where
+the boundary falls. Carry counts and gaps are unaffected: they key on the goal
+id, which is contract rather than method.
 
-**Done when** every row is parsed, segmented by unit, and amendments applied.
+Rows written before any method was declared carry `unspecified`. That is a real
+segment, not missing data, and the place the instrument changed is itself worth
+naming.
+
+**Done when** every row is parsed and segmented by both unit and method.
 
 ## 2. Carried goals
 

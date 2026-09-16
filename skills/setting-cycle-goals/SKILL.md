@@ -1,16 +1,18 @@
 ---
 name: setting-cycle-goals
 description: >
-  Draft the next cycle's goals with theory and practice confidence estimates,
-  and force a decision on any goal you are unlikely to actually do.
+  Draft the next cycle's goals, each with the plan that would produce it and
+  theory and practice confidence estimates of that plan, and force a decision on
+  any goal you are unlikely to actually do.
 ---
 
 # Setting cycle goals
 
-Writes `goals.md` for the cycle about to start. Owns the goals format, the
-confidence estimate, and the gate that fires when a goal is unlikely to happen.
+Writes `goals.md` for the cycle about to start. Owns the goals format, the plan,
+the confidence estimate, and the gate that fires when a goal is unlikely to
+happen.
 
-Consult the `engineering-cycle-model` skill for the estimate axes, goal identity,
+Consult the `weekly-cycle-model` skill for the estimate axes, goal identity,
 and the gates.
 
 This is where the loop is armed. Everything downstream measures against what gets
@@ -72,7 +74,7 @@ dropped.
 ## 4. Draft the goals
 
 New goals get a fresh id. Keep the set small enough that the practice estimate in
-step 5 can be honest — a long list is a practice score problem wearing a
+step 6 can be honest — a long list is a practice score problem wearing a
 planning costume.
 
 Each goal needs a title concrete enough that step 3 of `assessing-cycle-goals`
@@ -82,21 +84,53 @@ assessed; "extract the shared cycle-id resolver" can.
 **Done when** every goal has an id, a title an assessor could rule on, and
 carried goals kept their original ids.
 
-## 5. Estimate theory and practice
+## 5. Draft the plan
 
-Ask for both, per goal, 0 to 100:
+Per goal, ask for the **three to five major moves** that would produce the
+result. Concrete actions, not intentions: "review the distribution and choose
+what to sell" rather than "sort out the portfolio".
 
-- **Theory** — will these steps produce the result? A question about the world.
-- **Practice** — will I actually do them? A question about the person.
+This step exists because step 6 has to have a subject. Without a written plan
+there is nothing to estimate but the title, and the numbers describe how the
+title feels. `2026-W37` scored practice 80, 85 and 80 across three planless
+goals and missed all three.
+
+Two failures to catch here, because they are what the two axes separate:
+
+- **A plan that does not reach the goal even if followed perfectly.** Posting
+  weekly and chasing sponsors does not produce ten thousand a month, however
+  faithfully it is done.
+- **A plan nobody would follow.** Running five hours a day would produce the
+  deficit, and will not happen.
+
+The first is a theory problem, the second a practice problem. Naming them now is
+cheaper than discovering them in step 7, where the gate fires.
+
+**Done when** every goal carries 3-5 concrete moves.
+
+## 6. Estimate theory and practice
+
+Ask for both, per goal, 0 to 100. **Both questions are about the plan from step
+5, not about the goal**:
+
+- **Theory** — assuming the plan is followed to 100% accuracy, does it reach the
+  goal? A question about the world.
+- **Practice** — will I actually follow the plan? A question about the person.
 
 Ask them separately and let the numbers diverge. Collapsing them into one
 confidence score is what hides the diagnosis: the goal that ate four cycles
 scored 95 and 20, and every cycle spent sharpening the plan was aimed at the
 number that was already fine.
 
-**Done when** every goal carries two independent numbers the user stated.
+Scoring the goal rather than the plan hides it a second way. A goal that is easy
+to describe scores high while the plan beneath it has no tracking, no
+accountability and no protected time, and the number says nothing about whether
+the week will move.
 
-## 6. Run the gate
+**Done when** every goal carries two independent numbers the user stated, and
+both were asked about the plan.
+
+## 7. Run the gate
 
 **Theory below 80** → the plan is the problem. Work the plan until it clears, or
 drop the goal. A vague plan is a theory failure, not a motivation failure.
@@ -120,7 +154,7 @@ it" is not support; "Tuesday 9-12 blocked, phone in a drawer" is.
 **Done when** every goal clears 80 on both axes, or carries a cut, a shrink, or a
 concrete support that names a specific commitment.
 
-## 7. Write `goals.md`
+## 8. Write `goals.md`
 
 ```markdown
 ---
@@ -129,11 +163,19 @@ unit: iso-week
 goals:
   - id: g-7f3a
     title: Extract the shared cycle-id resolver
+    plan:
+      - Map the three call sites that duplicate the resolution
+      - Extract the resolver behind the existing config lookup
+      - Point the three sites at it and delete the duplicates
     estimate: { theory: 95, practice: 85 }
     carried_from: 2026-W32
     support: "Tuesday 9-12 blocked, phone in a drawer"
   - id: g-c41d
     title: Draft the newsletter for W32
+    plan:
+      - Pull the week's commits and pick the three worth telling
+      - Draft the opening and the closing
+      - Read it aloud once and cut what does not survive
     estimate: { theory: 90, practice: 90 }
 ---
 
@@ -151,10 +193,15 @@ reconstructs them. Once written, they are not revised in light of how the cycle
 went — that is the anti-backfill rule, and it is what makes calibration scoring
 mean anything.
 
-**Done when** `goals.md` exists in the target cycle directory, its frontmatter
-parses, and every goal carries an id and both estimates.
+**The plan freezes with them**, and for the same reason. The estimate is a
+judgment about that plan, so a plan edited afterwards leaves the numbers
+describing something that no longer exists. Changing the plan mid-cycle is a new
+decision, recorded in prose, not a correction of the frozen one.
 
-## 8. Report
+**Done when** `goals.md` exists in the target cycle directory, its frontmatter
+parses, and every goal carries an id, a plan and both estimates.
+
+## 9. Report
 
 State the goals with their estimates, what was cut or shrunk, and any support
 commitments made.

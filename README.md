@@ -53,9 +53,10 @@ Reachable by the model or by you.
 - **[naming-skills](./skills/naming-skills/SKILL.md)** — name a new skill, or
   audit existing names, against this repo's action/reference taxonomy.
 
-The **engineering cycle** — a repeating, measured work cycle: collect what
-happened, review it, assess it against the goals the cycle started with, then set
-the next cycle's goals. The loop closes because the goals written at the end of
+The **weekly cycle** — a repeating, measured work cycle of one ISO week: collect
+what happened, review it, assess it against the goals the cycle started with,
+then set the next cycle's goals. Domain-agnostic: a goal can be a refactor, a
+portfolio sale or a job application, and the machinery treats them the same. The loop closes because the goals written at the end of
 one cycle are what the next is measured against. Adapted from Watts Humphrey's
 Personal Software Process, moved from task scale to cycle scale.
 
@@ -64,9 +65,9 @@ something already gates them: each step runs behind a user-invoked facade that
 decides when the cycle advances. Putting the flag here too would not add a
 second gate, it would break the facade's ability to delegate.
 
-- **[engineering-cycle-model](./skills/engineering-cycle-model/SKILL.md)** — the
-  shared model: the sequence, the artifact contract, and the rules the other six
-  obey. Reference, not steps.
+- **[weekly-cycle-model](./skills/weekly-cycle-model/SKILL.md)** — the shared
+  model: the sequence, the artifact contract, and the rules the other six obey.
+  Reference, not steps.
 - **[collecting-cycle-data](./skills/collecting-cycle-data/SKILL.md)** — the
   mechanical half: git across the configured repos, plus an optional task export.
 - **[writing-cycle-review](./skills/writing-cycle-review/SKILL.md)** — the

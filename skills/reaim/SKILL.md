@@ -17,7 +17,7 @@ setting-cycle-goals   → <cycle>/goals.md
 ```
 
 **This is a facade.** The doctrine — the estimate axes, goal identity, the gates —
-lives in the `engineering-cycle-model` skill. Read it first. This file owns the
+lives in the `weekly-cycle-model` skill. Read it first. This file owns the
 drafting discipline and the orchestration.
 
 **Aiming, not resetting.** The `re-` is the point: the cycle is not starting from
@@ -29,6 +29,13 @@ Everything vault-specific is a **config pointer with a default**. The drafting
 constraints below are the default; a consumer points `goals.constraints` at its
 own file to override. The note shape is the global's own unless `goals.format`
 names one.
+
+**The default method is GPS**, documented in `reference/interrogation.md`: how to
+ask for a `why`, `anti_goals`, `plan`, `crystal_ball`, `remedies` and `system`,
+and how to tell when an answer is hollow. Only `plan` is in the global contract,
+because without it the estimate has no subject. The rest belong to the method, so
+a consumer that wants different fields points `goals.format` at its own shape and
+`goals.constraints` at its own discipline, and this facade runs unchanged.
 
 ---
 
@@ -80,11 +87,17 @@ Invoke **`setting-cycle-goals`** for the resolved cycle id. Give it the drafting
 constraints — `reference/constraints.md` by default, or the file `goals.constraints`
 names — and, when `config.json` names a `goals.format`, that too.
 
-It handles carry-or-drop with id preservation, the estimate interview, the gate,
-and writes `goals.md` with machine-readable frontmatter.
+Give it **`reference/interrogation.md`** as well, unless `goals.format` names a
+shape of its own. It carries the questions behind each field and the failure each
+one hides, which is what the global skill cannot supply: the contract can say a
+field must be present, not whether the answer in it is real.
+
+It handles carry-or-drop with id preservation, the plan, the estimate interview,
+the gate, and writes `goals.md` with machine-readable frontmatter.
 
 Hold the constraints throughout — they govern how the draft is produced, not what
-it contains, so the global skill cannot enforce them.
+it contains, so the global skill cannot enforce them. The interrogation guide is
+the same kind of material: a conversation discipline, not an artifact rule.
 
 **Done when** `goals.md` exists, its frontmatter parses, every goal carries an id,
 and carried goals kept their original ids.

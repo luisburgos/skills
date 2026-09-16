@@ -9,8 +9,7 @@ disable-model-invocation: true
 
 # Recap
 
-Closes out a cycle's record. Two steps of the engineering cycle, run back to
-back:
+Closes out a cycle's record. Two steps of the weekly cycle, run back to back:
 
 ```
 collecting-cycle-data   → <cycle>/data.json     (mechanical, goal-blind)
@@ -18,7 +17,7 @@ writing-cycle-review    → <cycle>/review.html   (optional, narrative)
 ```
 
 **This is a facade.** The doctrine — the trust seam, the freeze rules, the time
-rules — lives in the `engineering-cycle-model` skill. Read it first. This file
+rules — lives in the `weekly-cycle-model` skill. Read it first. This file
 owns only the orchestration: resolve the cycle, get the task export into place,
 delegate, report.
 
@@ -46,7 +45,8 @@ week early on Sunday evenings and files Sunday-night commits in the wrong cycle.
 
 ## 2. Place the task export
 
-Skip when no task source is configured — git alone is a complete run.
+Skip when no task source is configured: git alone is a complete run, just as a
+task source alone is a complete run when there is no git.
 
 `config.json`'s `task_source` names how records reach the drop folder. The
 **default** is a hand-placed export already sitting in `task_source.path`: nothing

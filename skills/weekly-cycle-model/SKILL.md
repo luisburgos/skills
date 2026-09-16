@@ -1,16 +1,28 @@
 ---
-name: engineering-cycle-model
+name: weekly-cycle-model
 description: >
-  The shared model of the engineering cycle — the sequence, the artifact
-  contract, and the rules every cycle skill obeys. Read before running any of
-  them.
+  The shared model of the weekly cycle — the sequence, the artifact contract,
+  and the rules every cycle skill obeys. Read before running any of them.
 ---
 
-# Engineering cycle model
+# Weekly cycle model
 
 A **cycle** is one ISO week of work, measured against goals written before it
 started. The loop closes because the goals set at the end of one cycle are what
 the next cycle is graded against.
+
+The week is not a parameter. The cycle id **is** the ISO week, it sorts
+chronologically because it sorts lexicographically, and prior-cycle resolution
+is a directory listing rather than date arithmetic. That is why the unit is in
+the name.
+
+**The cycle is domain-agnostic.** Nothing here knows what kind of work a goal
+is. A goal can be a refactor, a portfolio sale, a job application or a health
+habit, and the machinery treats them identically: an id, a plan, two estimates,
+an outcome. Where git is used it is file version control for the artifacts, not
+a claim that the work is engineering, and a commit count therefore measures only
+the goals that happen to produce commits. See *Sources* for when it is used at
+all.
 
 This is doctrine, not commands. The six action skills run the steps; this holds
 what they agree on.
@@ -90,21 +102,24 @@ Two things freeze at different moments, because they are different in kind:
   principle — but git mutates under rebase, force-push, and moved repos. A
   re-derivation months later can silently produce a different number.
 
-Correcting a closed cycle is an **explicit amendment row**, never a silent
-rebuild.
+Correcting a closed cycle is an **explicit amendment recorded in
+`assessment.md`**, never a silent edit. The artifact carries its own corrections,
+so what was changed and why survives in the document that made the claim.
 
 ## History
 
-`history.jsonl` is the freeze target, one row per cycle:
+`history.jsonl` is a **derived index**, one row per cycle:
 
 ```json
 {
   "cycle": "2026-W32",
   "unit": "iso-week",
+  "method": "gps",
   "goals": [
     {
       "id": "g-7f3a",
       "title": "…",
+      "plan": ["…", "…", "…"],
       "estimate": { "theory": 95, "practice": 20 },
       "outcome": "missed",
       "carried_from": "2026-W31"
@@ -114,7 +129,26 @@ rebuild.
 }
 ```
 
-Rows are **appended**, never edited.
+**The cycle artifacts are the source of truth; this file is the fast read across
+them.** Every field above comes from `goals.md`, `assessment.md` and `data.json`,
+which are frozen once the cycle closes. Nothing lives here alone.
+
+That is what makes it **rebuildable**. A row is normally appended at close, but
+the whole file can be regenerated from the closed artifacts when it drifts, and
+it does drift: a renamed key in `measured` or an assessment written in an older
+shape leaves rows that no longer agree with each other. An append-only record
+cannot be repaired; an index can.
+
+Rebuilding is not re-deriving. **Never recompute figures from git**, which mutates
+under rebase and moved repos. Rebuild only by reading what the closed artifacts
+already say.
+
+`method` names the goal-drafting method the cycle was set with, `unspecified`
+where none was declared. It is recorded for the same reason as `unit`: so rows
+stay self-describing. Theory and practice mean different things under a method
+that estimates the plan than under one that estimates the goal, so calibration is
+compared **within** a method, never across a change of one. Carry counts and gaps
+still cross the boundary, because they depend on the id, which is contract.
 
 ## Goal identity
 
@@ -126,12 +160,33 @@ that was reworded and expanded every cycle while never being started. Text
 matching fails on exactly that case. An id keeps its identity while its text
 changes.
 
+## The plan
+
+Every goal carries a **plan**: the three to five major moves that would produce
+the result. It is written before the estimate, because it is what the estimate
+is about.
+
+A goal with no written plan cannot be estimated, only guessed at. The estimate
+then lands on the only thing on the page, which is the title, and a number
+attached to a title is an impression with two decimal places.
+
+`2026-W37` is the worked example. Three goals scored practice 80, 85 and 80, and
+all three missed. The goals were not the problem; there were no plans, so the
+scores described how the titles felt.
+
 ## The confidence estimate
 
-Every goal carries two numbers, set when the goal is written:
+Every goal carries two numbers, set when the goal is written. **Both take the
+plan as their subject, not the goal**:
 
-- **Theory** — will these steps produce the result? A question about the world.
-- **Practice** — will I actually do them? A question about the person.
+- **Theory** — assuming the plan is followed to 100% accuracy, does it reach the
+  goal? A question about the world.
+- **Practice** — will I actually follow the plan? A question about the person.
+
+Estimating the goal instead hides the diagnosis, because an easy goal scores well
+while the plan under it is fragile. A trivial goal with no tracking, no
+accountability and no protected time can score 85 on a reading of the goal and
+still register nothing.
 
 Below 80 on either axis means stop and fix **that** axis. Sharpening a plan that
 already scores 95 on theory is effort aimed at the number that was never the
@@ -171,15 +226,36 @@ early on Sunday evenings, putting Sunday-night commits in the wrong cycle.
 
 ## Sources
 
-**Git is required.** Config lists *roots to scan*, not individual repos, so a new
-repo is picked up without the config going stale. An exclude list covers archives
-and vendored clones. Commits are filtered to the configured authors — a list, so
-one person's several git identities across repos all count — merges excluded.
+**Git is strongly recommended, not required.** Where it exists it is the cheapest
+honest record of a week: it was written as the work happened, not reconstructed
+on Sunday from memory. Config lists *roots to scan*, not individual repos, so a
+new repo is picked up without the config going stale. An exclude list covers
+archives and vendored clones. Commits are filtered to the configured authors, a
+list, so one person's several git identities across repos all count, merges
+excluded.
+
+Where git is absent, **offer to help install and set it up**, and say plainly
+what it buys: a record that cannot be bent toward the plan afterwards. If the
+user declines, the loop still runs. Goals, plans, estimates, the gate and the
+assessment do not depend on a commit ever existing.
+
+What a git-less cycle loses is the mechanical half of the evidence, so
+`data.json` carries whatever sources are configured and the assessment leans on
+the task source and the user's own account. That is weaker, and the assessment
+should say so rather than presenting it as measured fact.
+
+**A commit count is not a measure of a cycle.** It counts the goals that happen
+to produce commits and is blind to the rest. A week of 91 commits alongside three
+missed goals is a real and ordinary result, not a contradiction.
 
 **A task source is optional enrichment.** It is a seam, not a fixed file:
 collection asks for "tasks completed in this window". Today that is a hand-placed
 export in `<root>/raw-data/`; a different source later is a config change, not a
 redesign.
+
+**At least one source must be configured.** Git, a task source, or both. A cycle
+with no sources at all has nothing to assess against and the loop cannot close
+honestly.
 
 ## Facades and overrides
 
