@@ -52,6 +52,9 @@ Reachable by the model or by you.
   goes public.
 - **[naming-skills](./skills/naming-skills/SKILL.md)** — name a new skill, or
   audit existing names, against this repo's action/reference taxonomy.
+- **[writing-pull-requests](./skills/writing-pull-requests/SKILL.md)**: check
+  a change is one pull request, then write its description in a register that
+  states what the diff cannot. Carries a template for repositories without one.
 
 The **weekly cycle** — a repeating, measured work cycle of one ISO week: collect
 what happened, review it, assess it against the goals the cycle started with,
