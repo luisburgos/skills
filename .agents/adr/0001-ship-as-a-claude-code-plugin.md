@@ -1,6 +1,6 @@
 # 0001 — Ship as a Claude Code plugin, Claude-only, and be our own marketplace
 
-**Status:** Accepted
+**Status:** Superseded by [0004](./0004-one-plugin-per-audience.md)
 
 ## Context
 
