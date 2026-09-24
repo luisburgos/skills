@@ -9,11 +9,14 @@ the same output.
 
 ## Install
 
-This repo is its own single-plugin marketplace:
+This repo is a marketplace of two plugins, one per audience
+([0004](./.agents/adr/0004-one-plugin-per-audience.md)). Add it once, then
+install the plugin you need:
 
 ```sh
 claude plugin marketplace add luisburgos/skills
-claude plugin install luisburgos-skills
+claude plugin install contributing@luisburgos
+claude plugin install luisburgos-skills@luisburgos
 ```
 
 ## Updating
@@ -22,12 +25,13 @@ Refresh the marketplace first, then the plugin, then restart Claude Code:
 
 ```sh
 claude plugin marketplace update luisburgos
-claude plugin update luisburgos-skills
+claude plugin update contributing@luisburgos
+claude plugin update luisburgos-skills@luisburgos
 ```
 
 **The order matters.** `plugin update` resolves against a cached copy of the
 marketplace manifest, so skipping the first command re-reads the stale cache and
-reports nothing to update — which looks identical to no release having shipped.
+reports nothing to update, which looks identical to no release having shipped.
 
 `claude plugin list` confirms the installed version. Installs made with
 `--scope project` or `local` need the same `-s` on `plugin update`, which
@@ -35,26 +39,38 @@ defaults to `user`.
 
 ## Skills
 
-A skill reaches users only when it is both listed in
-`.claude-plugin/plugin.json` and referenced in this section; see
-[CLAUDE.md](./CLAUDE.md) for that invariant and the rest of the house rules.
+A skill reaches users only when it sits in a plugin's folder and is referenced
+in this section, under that plugin; see [CLAUDE.md](./CLAUDE.md) for that
+invariant and the rest of the house rules.
 
-Entries are grouped by **invocation** — whether the model can reach a skill on
-its own, or only you can. Model-invoked is the default; user-invoked is the
-deliberate exception, marked `disable-model-invocation: true` in frontmatter.
+Within a plugin, entries are grouped by **invocation**: whether the model can
+reach a skill on its own, or only you can. Model-invoked is the default;
+user-invoked is the deliberate exception, marked
+`disable-model-invocation: true` in frontmatter.
 
-### Model-invoked
+### contributing
+
+How a contribution to a repository is written up. For any repository whose
+collaborators should write the same way, declared in its
+`.claude/settings.json`. Every skill here is model-invoked.
+
+- **[drafting-release-notes](./skills/contributing/drafting-release-notes/SKILL.md)** — draft
+  curated GitHub Release notes for a tag, as a draft the user approves before it
+  goes public.
+- **[writing-pull-requests](./skills/contributing/writing-pull-requests/SKILL.md)**: check
+  a change is one pull request, then write its description in a register that
+  states what the diff cannot. Carries a template for repositories without one.
+
+### luisburgos-skills
+
+Personal workflow and skill authoring.
+
+#### Model-invoked
 
 Reachable by the model or by you.
 
-- **[drafting-release-notes](./skills/drafting-release-notes/SKILL.md)** — draft
-  curated GitHub Release notes for a tag, as a draft the user approves before it
-  goes public.
-- **[naming-skills](./skills/naming-skills/SKILL.md)** — name a new skill, or
+- **[naming-skills](./skills/personal/naming-skills/SKILL.md)** — name a new skill, or
   audit existing names, against this repo's action/reference taxonomy.
-- **[writing-pull-requests](./skills/writing-pull-requests/SKILL.md)**: check
-  a change is one pull request, then write its description in a register that
-  states what the diff cannot. Carries a template for repositories without one.
 
 The **weekly cycle** — a repeating, measured work cycle of one ISO week: collect
 what happened, review it, assess it against the goals the cycle started with,
@@ -68,19 +84,19 @@ something already gates them: each step runs behind a user-invoked facade that
 decides when the cycle advances. Putting the flag here too would not add a
 second gate, it would break the facade's ability to delegate.
 
-- **[weekly-cycle-model](./skills/weekly-cycle-model/SKILL.md)** — the shared
+- **[weekly-cycle-model](./skills/personal/weekly-cycle-model/SKILL.md)** — the shared
   model: the sequence, the artifact contract, and the rules the other six obey.
   Reference, not steps.
-- **[collecting-cycle-data](./skills/collecting-cycle-data/SKILL.md)** — the
+- **[collecting-cycle-data](./skills/personal/collecting-cycle-data/SKILL.md)** — the
   mechanical half: git across the configured repos, plus an optional task export.
-- **[writing-cycle-review](./skills/writing-cycle-review/SKILL.md)** — the
+- **[writing-cycle-review](./skills/personal/writing-cycle-review/SKILL.md)** — the
   interpretive half: the readable narrative of a cycle.
-- **[assessing-cycle-goals](./skills/assessing-cycle-goals/SKILL.md)** — measure
+- **[assessing-cycle-goals](./skills/personal/assessing-cycle-goals/SKILL.md)** — measure
   the cycle against its goals, score the estimates, and close it.
-- **[setting-cycle-goals](./skills/setting-cycle-goals/SKILL.md)** — draft the
+- **[setting-cycle-goals](./skills/personal/setting-cycle-goals/SKILL.md)** — draft the
   next cycle's goals with theory and practice confidence estimates.
 
-### User-invoked
+#### User-invoked
 
 Reachable only by typing the name.
 
@@ -88,20 +104,20 @@ The three cycle **facades** — each wrapping the step skills into a command you
 — plus the two cycle skills no facade covers. Nothing else decides when these run,
 so the gate has to be you.
 
-- **[recap](./skills/recap/SKILL.md)** — close a finished cycle's record: collect
+- **[recap](./skills/personal/recap/SKILL.md)** — close a finished cycle's record: collect
   what happened, then optionally write the review. Facade over
   `collecting-cycle-data` and `writing-cycle-review`.
-- **[recheck](./skills/recheck/SKILL.md)** — close a cycle against its goals: judge
+- **[recheck](./skills/personal/recheck/SKILL.md)** — close a cycle against its goals: judge
   each, score the estimates, write the assessment, freeze the history row. Facade
   over `assessing-cycle-goals`.
-- **[reaim](./skills/reaim/SKILL.md)** — set the coming cycle's goals with theory
+- **[reaim](./skills/personal/reaim/SKILL.md)** — set the coming cycle's goals with theory
   and practice estimates, carrying or dropping what did not land. Facade over
   `setting-cycle-goals`.
-- **[configuring-cycle-tracking](./skills/configuring-cycle-tracking/SKILL.md)**
+- **[configuring-cycle-tracking](./skills/personal/configuring-cycle-tracking/SKILL.md)**
   — one-time setup: artifact root, repos to scan, task source, timezone. It
   writes the config every later tally reads, so a stray run would silently
   redefine what every cycle is measured against.
-- **[reviewing-cycle-trends](./skills/reviewing-cycle-trends/SKILL.md)** — read
+- **[reviewing-cycle-trends](./skills/personal/reviewing-cycle-trends/SKILL.md)** — read
   across many cycles for carried goals, estimate calibration, and gaps.
 
 ## Local development
@@ -110,8 +126,8 @@ so the gate has to be you.
 ./scripts/link-skills.sh
 ```
 
-Symlinks every skill in the tree into `~/.claude/skills/`, including ones not
-yet promoted — local reach is deliberately wider than what ships.
+Symlinks every skill in the tree into `~/.claude/skills/`, `drafts/` included:
+local reach is deliberately wider than what ships.
 
 ## Decisions
 
@@ -122,6 +138,7 @@ per file, immutable once accepted:
 - [0002 — Keep `skills/` flat](./.agents/adr/0002-flat-skills-directory.md)
 - [0003 — Skill naming taxonomy](./.agents/adr/0003-skill-naming-taxonomy.md)
 - [0004: One plugin per audience, from one marketplace](./.agents/adr/0004-one-plugin-per-audience.md)
+- [0005: Group skills in a folder per plugin](./.agents/adr/0005-folder-per-plugin.md)
 
 ## Credits
 

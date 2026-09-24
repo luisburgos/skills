@@ -3,19 +3,48 @@
   "owner": {
     "name": "Luis Burgos"
   },
-  "description": "Luis Burgos's skills as an installable Claude Code plugin.",
+  "description": "Luis Burgos's agent skills, as one Claude Code plugin per audience.",
   "plugins": [
     {
       "name": "luisburgos-skills",
       "source": "./",
-      "description": "Agent skills for skill authoring — naming conventions and the discipline that keeps them predictable.",
+      "strict": false,
+      "version": "0.5.0",
+      "description": "Personal workflow and skill authoring: the weekly cycle, and naming skills.",
+      "author": {
+        "name": "Luis Burgos"
+      },
+      "repository": "https://github.com/luisburgos/skills",
+      "license": "MIT",
       "category": "engineering",
       "keywords": [
         "skills",
         "authoring",
         "naming",
+        "weekly-review",
+        "goal-setting",
+        "continuous-improvement"
+      ],
+      "skills": "./skills/personal/"
+    },
+    {
+      "name": "contributing",
+      "source": "./",
+      "strict": false,
+      "version": "0.1.0",
+      "description": "How a contribution to a repository is written up: pull requests and release notes.",
+      "author": {
+        "name": "Luis Burgos"
+      },
+      "repository": "https://github.com/luisburgos/skills",
+      "license": "MIT",
+      "category": "engineering",
+      "keywords": [
+        "pull-requests",
+        "release-notes",
         "conventions"
-      ]
+      ],
+      "skills": "./skills/contributing/"
     }
   ]
 }

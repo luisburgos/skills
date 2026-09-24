@@ -1,14 +1,17 @@
 # skills — agent notes
 
-A collection of agent skills, shipped as a Claude Code plugin.
+A collection of agent skills, shipped as one Claude Code plugin per audience
+([0004](./.agents/adr/0004-one-plugin-per-audience.md)).
 
 ## Layout
 
-`skills/` is **flat** — one directory per skill, no bucket folders
-([0002](./.agents/adr/0002-flat-skills-directory.md)):
+Each plugin's skills live in a folder of their own, and drafts outside all of
+them ([0005](./.agents/adr/0005-folder-per-plugin.md)):
 
 ```
-skills/<skill-name>/SKILL.md
+skills/personal/<skill-name>/SKILL.md       luisburgos-skills
+skills/contributing/<skill-name>/SKILL.md   contributing
+drafts/<skill-name>/SKILL.md                ships in no plugin
 ```
 
 Reference a skill discloses (rung-3 material — see the skill-authoring
@@ -18,21 +21,41 @@ discipline below) sits **beside** its `SKILL.md`, inside that skill's folder.
 
 A skill **ships if and only if** it is:
 
-1. listed in `.claude-plugin/plugin.json`'s `skills` array, **and**
-2. referenced in the top-level `README.md`, linked to its `SKILL.md`.
+1. in the folder of a plugin that `.claude-plugin/marketplace.json` lists,
+   **and**
+2. referenced in the top-level `README.md`, under that plugin, linked to its
+   `SKILL.md`.
 
-Both, or neither. The manifest is the gate — a skill can sit in the tree
-unfinished without reaching users, which is why the layout needs no
-`in-progress/` folder.
+Both, or neither. The folder is the gate: an unfinished skill waits in
+`drafts/`, and shipping it is moving it into a plugin's folder.
 
-After touching either manifest, run:
+There is no `plugin.json`. Each plugin is an entry in `marketplace.json` with
+`"source": "./"`, `"strict": false` and its `skills` pointing at its folder; a
+root `plugin.json` makes those entries fail to load.
+
+After touching the manifest, run:
 
 ```sh
 claude plugin validate . --strict
 ```
 
-`plugin.json`'s `version` is what Claude uses to decide when installed users see
-an update — bump it deliberately, not on every edit.
+Each entry's `version` is what Claude uses to decide when installed users see
+an update. Bump a plugin's version when its own skills change, deliberately,
+not on every edit.
+
+## Adding a plugin
+
+A group of skills becomes a plugin of its own when it has an audience of its
+own and is already used in more than one repository (0004).
+
+1. Create `skills/<plugin-name>/` and move the skills into it.
+2. Add an entry to `marketplace.json`: `name`, `"source": "./"`,
+   `"strict": false`, `"skills": "./skills/<plugin-name>/"`, a `version`
+   starting at `0.1.0`, a description and keywords.
+3. Add a section for it to the README, with its install command.
+4. Run `claude plugin validate . --strict`.
+
+New plugins take no `luisburgos-` prefix: the marketplace already carries it.
 
 ## Invocation
 
@@ -87,6 +110,6 @@ revisiting it rather than writing "revisit later".
 `~/.claude/skills/`, so a `git pull` keeps them current. Re-run it after adding,
 removing, or renaming a skill.
 
-Symlinked skills are reachable **before** they are promoted into the manifest —
-that is the point. The manifest controls what other people get; the symlinks
-control what you get.
+Symlinked skills, `drafts/` included, are reachable **before** they ship, and
+that is the point. The plugin folders control what other people get; the
+symlinks control what you get.

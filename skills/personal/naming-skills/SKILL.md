@@ -117,4 +117,4 @@ pass, stated as passing, so the sweep is visibly complete.
 
 This taxonomy describes observed practice rather than inventing one. The sources
 analyzed, the confidence argument, and what would overturn it live in
-[ADR-0003](../../.agents/adr/0003-skill-naming-taxonomy.md).
+[ADR-0003](../../../.agents/adr/0003-skill-naming-taxonomy.md).
