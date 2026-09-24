@@ -60,6 +60,10 @@ collaborators should write the same way, declared in its
 - **[writing-adrs](./skills/contributing/writing-adrs/SKILL.md)**: check a
   decision needs a record, then write it in a register that states each reason
   once. Carries a template and a records README for repositories without them.
+- **[writing-prds](./skills/contributing/writing-prds/SKILL.md)**: draft a
+  product requirements document whole, then close its gaps one question at a
+  time until its review checklist passes. Carries a template for repositories
+  without one.
 - **[writing-pull-requests](./skills/contributing/writing-pull-requests/SKILL.md)**: check
   a change is one pull request, then write its description in a register that
   states what the diff cannot. Carries a template for repositories without one.
