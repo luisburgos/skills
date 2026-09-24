@@ -32,7 +32,7 @@
       "source": "./",
       "strict": false,
       "version": "0.1.0",
-      "description": "How a contribution to a repository is written up: pull requests and release notes.",
+      "description": "How a contribution to a repository is written up: pull requests, decision records and release notes.",
       "author": {
         "name": "Luis Burgos"
       },
@@ -42,6 +42,7 @@
       "keywords": [
         "pull-requests",
         "release-notes",
+        "adr",
         "conventions"
       ],
       "skills": "./skills/contributing/"

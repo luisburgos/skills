@@ -57,6 +57,9 @@ collaborators should write the same way, declared in its
 - **[drafting-release-notes](./skills/contributing/drafting-release-notes/SKILL.md)** — draft
   curated GitHub Release notes for a tag, as a draft the user approves before it
   goes public.
+- **[writing-adrs](./skills/contributing/writing-adrs/SKILL.md)**: check a
+  decision needs a record, then write it in a register that states each reason
+  once. Carries a template and a records README for repositories without them.
 - **[writing-pull-requests](./skills/contributing/writing-pull-requests/SKILL.md)**: check
   a change is one pull request, then write its description in a register that
   states what the diff cannot. Carries a template for repositories without one.
