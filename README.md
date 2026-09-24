@@ -121,6 +121,7 @@ per file, immutable once accepted:
 - [0001 — Ship as a Claude Code plugin, Claude-only](./.agents/adr/0001-ship-as-a-claude-code-plugin.md)
 - [0002 — Keep `skills/` flat](./.agents/adr/0002-flat-skills-directory.md)
 - [0003 — Skill naming taxonomy](./.agents/adr/0003-skill-naming-taxonomy.md)
+- [0004: One plugin per audience, from one marketplace](./.agents/adr/0004-one-plugin-per-audience.md)
 
 ## Credits
 
