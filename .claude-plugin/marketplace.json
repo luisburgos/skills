@@ -9,7 +9,7 @@
       "name": "luisburgos-skills",
       "source": "./",
       "strict": false,
-      "version": "0.5.0",
+      "version": "0.6.0",
       "description": "Personal workflow and skill authoring: the weekly cycle, and naming skills.",
       "author": {
         "name": "Luis Burgos"
