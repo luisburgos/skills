@@ -1,6 +1,6 @@
 # 0002 — Keep `skills/` flat until the count justifies buckets
 
-**Status:** Accepted
+**Status:** Superseded by [0005](./0005-folder-per-plugin.md)
 
 ## Context
 
