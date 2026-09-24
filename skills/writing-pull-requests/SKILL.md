@@ -41,10 +41,10 @@ merged or is its own pull request.
 The repository's template wins, whatever its sections:
 `.github/pull_request_template.md`, or a variant under `.github/` or `docs/`.
 
-With none, offer to copy [pull_request_template.md](pull_request_template.md)
-from this skill's folder into the repository's `.github/`. Adding it is a
-change of its own, so it is its own pull request, and it waits for the user's
-yes.
+With none, offer to copy this skill's
+[assets/pull_request_template.md](assets/pull_request_template.md) into the
+repository's `.github/`. Adding it is a change of its own, so it is its own
+pull request, and it waits for the user's yes.
 
 **Done when:** the description has a template to follow.
 
