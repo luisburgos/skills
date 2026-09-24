@@ -46,7 +46,7 @@ it. Model-invoked skills always take the gerund or noun-phrase shape.
 taxonomy names the work.
 
 The rules themselves, and the procedures for naming and auditing against them,
-live in the [`naming-skills`](../../skills/naming-skills/SKILL.md) skill — so
+live in the [`naming-skills`](../../skills/personal/naming-skills/SKILL.md) skill — so
 they are reachable by invocation rather than sitting in a document someone must
 be told to read. This ADR records *why that taxonomy*; the skill is the single
 source of truth for *what it says*.

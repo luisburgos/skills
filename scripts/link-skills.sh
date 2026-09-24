@@ -7,9 +7,9 @@ set -euo pipefail
 #
 # Re-run after adding, removing, or renaming a skill.
 #
-# This links EVERY skill in the tree, promoted or not — local development wants
-# reach to work-in-progress. What ships to other people is governed by
-# .claude-plugin/plugin.json, not by this script.
+# This links EVERY skill in the tree, drafts/ included: local development wants
+# reach to work in progress. What ships to other people is decided by which
+# plugin's folder under skills/ a skill sits in, not by this script.
 
 REPO="$(cd "$(dirname "$0")/.." && pwd)"
 DEST="$HOME/.claude/skills"
@@ -47,10 +47,10 @@ while IFS= read -r -d '' skill_md; do
   ln -sfn "$src" "$target"
   echo "linked $name"
   linked=$((linked + 1))
-done < <(find "$REPO/skills" -name SKILL.md -not -path '*/node_modules/*' -print0)
+done < <(find "$REPO/skills" "$REPO/drafts" -name SKILL.md -not -path '*/node_modules/*' -print0 2>/dev/null)
 
 if [ "$linked" -eq 0 ]; then
-  echo "no skills found under $REPO/skills — nothing to link"
+  echo "no skills found under $REPO/skills or $REPO/drafts, nothing to link"
 else
   echo "$linked skill(s) linked into $DEST"
 fi
