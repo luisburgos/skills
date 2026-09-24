@@ -14,11 +14,13 @@
     "conventions",
     "weekly-review",
     "goal-setting",
-    "continuous-improvement"
+    "continuous-improvement",
+    "pull-requests"
   ],
   "skills": [
     "./skills/drafting-release-notes",
     "./skills/naming-skills",
+    "./skills/writing-pull-requests",
     "./skills/weekly-cycle-model",
     "./skills/configuring-cycle-tracking",
     "./skills/collecting-cycle-data",
