@@ -57,6 +57,10 @@ collaborators should write the same way, declared in its
 - **[drafting-release-notes](./skills/contributing/drafting-release-notes/SKILL.md)** — draft
   curated GitHub Release notes for a tag, as a draft the user approves before it
   goes public.
+- **[generating-changelogs](./skills/contributing/generating-changelogs/SKILL.md)**:
+  generate a release's changelog entry from Conventional Commits in the version
+  bump, per app where a repository tags its apps on their own. Carries a
+  configuration for prefixed tags such as `ios/1.2.0+3`.
 - **[writing-adrs](./skills/contributing/writing-adrs/SKILL.md)**: check a
   decision needs a record, then write it in a register that states each reason
   once. Carries a template and a records README for repositories without them.
