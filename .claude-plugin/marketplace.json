@@ -48,6 +48,28 @@
         "conventions"
       ],
       "skills": "./skills/contributing/"
+    },
+    {
+      "name": "mobile",
+      "source": "./",
+      "strict": false,
+      "version": "0.1.0",
+      "description": "Releasing a mobile app to Google Play and TestFlight, whatever it is built with: the store copy for a release.",
+      "author": {
+        "name": "Luis Burgos"
+      },
+      "repository": "https://github.com/luisburgos/skills",
+      "license": "MIT",
+      "category": "engineering",
+      "keywords": [
+        "mobile",
+        "google-play",
+        "testflight",
+        "app-store",
+        "store-notes",
+        "release-notes"
+      ],
+      "skills": "./skills/mobile/"
     }
   ]
 }

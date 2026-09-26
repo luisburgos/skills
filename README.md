@@ -9,13 +9,14 @@ the same output.
 
 ## Install
 
-This repo is a marketplace of two plugins, one per audience
+This repo is a marketplace of three plugins, one per audience
 ([0004](./.agents/adr/0004-one-plugin-per-audience.md)). Add it once, then
 install the plugin you need:
 
 ```sh
 claude plugin marketplace add luisburgos/skills
 claude plugin install contributing@luisburgos
+claude plugin install mobile@luisburgos
 claude plugin install luisburgos-skills@luisburgos
 ```
 
@@ -26,6 +27,7 @@ Refresh the marketplace first, then the plugin, then restart Claude Code:
 ```sh
 claude plugin marketplace update luisburgos
 claude plugin update contributing@luisburgos
+claude plugin update mobile@luisburgos
 claude plugin update luisburgos-skills@luisburgos
 ```
 
@@ -71,6 +73,15 @@ collaborators should write the same way, declared in its
 - **[writing-pull-requests](./skills/contributing/writing-pull-requests/SKILL.md)**: check
   a change is one pull request, then write its description in a register that
   states what the diff cannot. Carries a template for repositories without one.
+
+### mobile
+
+Releasing a mobile app to Google Play and TestFlight, whatever it is built
+with. Every skill here is model-invoked.
+
+- **[drafting-store-notes](./skills/mobile/drafting-store-notes/SKILL.md)**: draft
+  the Google Play notes and the TestFlight What's-New text from the release's
+  changelog entry, approved in conversation before either file is written.
 
 ### luisburgos-skills
 
