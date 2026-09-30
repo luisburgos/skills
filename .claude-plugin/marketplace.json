@@ -70,6 +70,28 @@
         "release-notes"
       ],
       "skills": "./skills/mobile/"
+    },
+    {
+      "name": "ui",
+      "source": "./",
+      "strict": false,
+      "version": "0.1.0",
+      "description": "Stack-agnostic UI blueprints, for web or mobile: deriving component and page blueprints from a mockup, and auditing an implementation against them.",
+      "author": {
+        "name": "Luis Burgos"
+      },
+      "repository": "https://github.com/luisburgos/skills",
+      "license": "MIT",
+      "category": "engineering",
+      "keywords": [
+        "ui",
+        "blueprints",
+        "components",
+        "design-systems",
+        "mockups",
+        "audit"
+      ],
+      "skills": "./skills/ui/"
     }
   ]
 }
