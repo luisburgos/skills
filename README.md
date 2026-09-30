@@ -9,7 +9,7 @@ the same output.
 
 ## Install
 
-This repo is a marketplace of three plugins, one per audience
+This repo is a marketplace of four plugins, one per audience
 ([0004](./.agents/adr/0004-one-plugin-per-audience.md)). Add it once, then
 install the plugin you need:
 
@@ -17,6 +17,7 @@ install the plugin you need:
 claude plugin marketplace add luisburgos/skills
 claude plugin install contributing@luisburgos
 claude plugin install mobile@luisburgos
+claude plugin install ui@luisburgos
 claude plugin install luisburgos-skills@luisburgos
 ```
 
@@ -28,6 +29,7 @@ Refresh the marketplace first, then the plugin, then restart Claude Code:
 claude plugin marketplace update luisburgos
 claude plugin update contributing@luisburgos
 claude plugin update mobile@luisburgos
+claude plugin update ui@luisburgos
 claude plugin update luisburgos-skills@luisburgos
 ```
 
@@ -82,6 +84,26 @@ with. Every skill here is model-invoked.
 - **[drafting-store-notes](./skills/mobile/drafting-store-notes/SKILL.md)**: draft
   the Google Play notes and the TestFlight What's-New text from the release's
   changelog entry, approved in conversation before either file is written.
+
+### ui
+
+Stack-agnostic UI blueprints, for web or mobile: a contract for what a
+component or page holds, written from a mockup before any code, and the audit
+that holds an implementation to it. Install it with
+`claude plugin install ui@luisburgos` and update it with
+`claude plugin update ui@luisburgos`, after the marketplace refresh above.
+Every skill here is user-invoked.
+
+- **[deriving-component-blueprints](./skills/ui/deriving-component-blueprints/SKILL.md)**:
+  derive a stack-agnostic component blueprint from a mockup or from existing
+  code.
+- **[deriving-ui-page-blueprints](./skills/ui/deriving-ui-page-blueprints/SKILL.md)**:
+  derive a page blueprint from a mockup, naming the components it is built from
+  and the data it shows them. Runs the first two steps of
+  `deriving-component-blueprints` first.
+- **[auditing-ui-blueprint-implementations](./skills/ui/auditing-ui-blueprint-implementations/SKILL.md)**:
+  audit a component or page implementation against its blueprint, and report
+  each gap with where its fix starts.
 
 ### luisburgos-skills
 

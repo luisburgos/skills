@@ -12,6 +12,7 @@ them ([0005](./.agents/adr/0005-folder-per-plugin.md)):
 skills/personal/<skill-name>/SKILL.md       luisburgos-skills
 skills/contributing/<skill-name>/SKILL.md   contributing
 skills/mobile/<skill-name>/SKILL.md         mobile
+skills/ui/<skill-name>/SKILL.md             ui
 drafts/<skill-name>/SKILL.md                ships in no plugin
 ```
 
