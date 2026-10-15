@@ -92,6 +92,28 @@
         "audit"
       ],
       "skills": "./skills/ui/"
+    },
+    {
+      "name": "tca",
+      "source": "./",
+      "strict": false,
+      "version": "0.1.0",
+      "description": "How a Swift app built with The Composable Architecture uses it, and the check and audit that hold it there.",
+      "author": {
+        "name": "Luis Burgos"
+      },
+      "repository": "https://github.com/luisburgos/skills",
+      "license": "MIT",
+      "category": "engineering",
+      "keywords": [
+        "swift",
+        "swiftui",
+        "composable-architecture",
+        "tca",
+        "architecture",
+        "audit"
+      ],
+      "skills": "./skills/tca/"
     }
   ]
 }

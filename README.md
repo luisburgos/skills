@@ -9,7 +9,7 @@ the same output.
 
 ## Install
 
-This repo is a marketplace of four plugins, one per audience
+This repo is a marketplace of five plugins, one per audience
 ([0004](./.agents/adr/0004-one-plugin-per-audience.md)). Add it once, then
 install the plugin you need:
 
@@ -18,6 +18,7 @@ claude plugin marketplace add luisburgos/skills
 claude plugin install contributing@luisburgos
 claude plugin install mobile@luisburgos
 claude plugin install ui@luisburgos
+claude plugin install tca@luisburgos
 claude plugin install luisburgos-skills@luisburgos
 ```
 
@@ -30,6 +31,7 @@ claude plugin marketplace update luisburgos
 claude plugin update contributing@luisburgos
 claude plugin update mobile@luisburgos
 claude plugin update ui@luisburgos
+claude plugin update tca@luisburgos
 claude plugin update luisburgos-skills@luisburgos
 ```
 
@@ -104,6 +106,27 @@ Every skill here is user-invoked.
 - **[auditing-ui-blueprint-implementations](./skills/ui/auditing-ui-blueprint-implementations/SKILL.md)**:
   audit a component or page implementation against its blueprint, and report
   each gap with where its fix starts.
+
+### tca
+
+How a Swift app built with The Composable Architecture uses it: where state,
+presentation, preferences, I/O and tests live, grounded in TCA's own
+documentation and maintainers, and the check and audit that hold an app to it.
+For any repository whose Swift app uses TCA. Install it with
+`claude plugin install tca@luisburgos` and update it with
+`claude plugin update tca@luisburgos`, after the marketplace refresh above.
+Every skill here is model-invoked.
+
+- **[tca-model](./skills/tca/tca-model/SKILL.md)**: the rules, T1 to T11, each
+  with its source and whether the check or the audit holds it. Reference, not
+  steps.
+- **[building-tca-features](./skills/tca/building-tca-features/SKILL.md)**:
+  build or change a feature against the rules rather than the code around it,
+  ending with the check on the lines it touched.
+- **[auditing-tca-conformance](./skills/tca/auditing-tca-conformance/SKILL.md)**:
+  adopt the check in a repository, and audit an app before a release, ranking
+  what entered since the last one. Carries `check-tca-conformance.sh`, which a
+  repository vendors and runs in CI and before a push.
 
 ### luisburgos-skills
 
