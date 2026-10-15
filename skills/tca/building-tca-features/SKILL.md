@@ -28,7 +28,14 @@ reducer starts one, composed into its parent with `Scope`, `ifLet` or
 `forEach`. A leaf view with no logic stays a plain view taking values, bindings
 and closures.
 
-**Done when:** the change has a reducer to live in, or is a leaf view with none.
+In a repository still being brought to the rules, a change is a slice: it names
+the rules it brings its code to. It may route through older code that breaks a
+rule it does not target, such as a parent that still writes inline, as long as
+it writes no breach of its own; the pull request names what it leaves to which
+later slice.
+
+**Done when:** the change has a reducer to live in, or is a leaf view with none,
+and a slice names its rules.
 
 ## 2. Write the state and the actions
 
@@ -40,7 +47,13 @@ and closures.
 - Derived values that logic or a test depends on are computed properties of
   State (T8).
 - Actions are named for what the user did and carry the raw payload: a drop
-  sends what was dropped and where, and the reducer decides what it means (T9).
+  sends what was dropped and where, a reordered list sends its indices, and the
+  reducer decides what they mean (T9).
+- Data a child shows but its parent owns goes into the child's State when it is
+  presented, and the parent refreshes it in one place after each change, until
+  observation (T6) gives the child its own read.
+- A change the parent writes leaves the child as a `delegate` action, which the
+  parent handles; the child never reaches into the parent's state.
 
 **Done when:** no value the reducer reads lives in a view.
 
@@ -54,6 +67,12 @@ and closures.
   from the view's `.task`, and filtered and sorted in the query (T6).
 - The date, calendar, time zone, locale, ids and waiting come from dependencies,
   read in the reducer and passed into State (T7).
+
+Swift 6 asks three things the compiler states poorly: a `.run` closure captures
+the dependencies it calls (`.run { [dismiss] _ in await dismiss() }`) rather than
+`self`; state read into another property of state goes through a local first
+(`let snapshot = ...; state.child?.x = snapshot.x`), or the accesses overlap;
+and a value carried by a binding action is `Sendable`.
 
 **Done when:** the reducer, given its state and an action, touches nothing
 outside itself.
@@ -73,7 +92,9 @@ dependency it reaches overridden (T10). Non-exhaustive only for an integration
 test across features or for state observed from the database, written
 `.off(showSkippedAssertions: true)` with its `// non-exhaustive:` reason. Each
 behavioural acceptance criterion of the PRD the change builds names the test that
-holds it.
+holds it. A child presented by a parent gets one integration test of the
+parent: present it, act in it, and receive its delegate action and what the
+parent does with it.
 
 **Done when:** each new behaviour has a test that fails when the behaviour is
 undone. Undo it once and watch the test fail; a test never seen failing proves

@@ -16,9 +16,11 @@ screen. Every rule is grounded in TCA's own documentation, examples or maintaine
 or, where they are silent, in a named engineering principle; the sources are
 linked under each rule. Read against TCA 1.26.
 
-A repository adopts these rules through a decision record that cites this skill,
-and checks them in CI with the script of `auditing-tca-conformance`. Where a
-repository's code and these rules disagree, the rules win: new code follows them,
+A repository adopts these rules through a decision record of its own, and keeps a
+copy of them as a file of the repository beside the script of
+`auditing-tca-conformance`, so a reader who sees only the repository can check
+every rule, and every `T` number a marker names. Once adopted, where the
+repository's code and its rules disagree, the rules win: new code follows them,
 and the old code is a finding, never a pattern to copy.
 
 **Check** marks what the script catches from one line of Swift. **Audit** marks
@@ -61,7 +63,8 @@ reads `UserDefaults.standard` directly, past the test and preview defaults that
 ## T4 View state (check)
 
 View `@State` holds only what no reducer logic reads: hover, press, animation
-phase, in-flight drag geometry, and a draft bridged to the store. Focus that the
+phase, in-flight drag geometry, a monitor's handle, and the open flag of a
+popover that only displays. Focus that the
 reducer sets lives in State, bridged with `@FocusState` and `.bind`. Each
 `@State` carries an `// ephemeral: <reason>` comment saying why the reducer never
 needs it, so every exception is visible.
@@ -72,10 +75,11 @@ TCA's own focus case study keeps focus in state
 ([FocusState](https://github.com/pointfreeco/swift-composable-architecture/blob/1.26.2/Examples/CaseStudies/SwiftUICaseStudies/01-GettingStarted-FocusState.swift#L14)).
 The comment is a house convention.
 
-A text field binds to the store through `BindingReducer` and `@Bindable`
+A field's text binds to the store through `BindingReducer` and `@Bindable`
 ([Bindings](https://github.com/pointfreeco/swift-composable-architecture/blob/1.26.2/Sources/ComposableArchitecture/Documentation.docc/Articles/Bindings.md)).
-`@State` for its text only where sending an action per keystroke has proven
-costly, or where the reducer rewrites the text while it is typed.
+A sheet may instead hold its fields in `@State` and send one finished value only
+when sending an action per keystroke has been measured as costly, or when the
+reducer rewrites the text as it is typed; the `// ephemeral:` reason names which.
 
 ## T5 I/O (audit)
 
@@ -92,8 +96,9 @@ a reducer that performs I/O cannot be tested by its state alone.
 
 ## T6 Observed data (audit)
 
-Displayed database data is observed, never re-read after a write, and filtered
-and sorted in the query rather than in Swift. With plain GRDB: one long-running
+Displayed database data is observed, never re-read after a write, and ordered
+and filtered by its own table in the query rather than in Swift; a derivation
+across records is a computed property of State (T8). With plain GRDB: one long-running
 `.run` effect, cancellable by id and started by
 `.task { await store.send(.task).finish() }`, iterating a client's
 `ValueObservation` stream. An app on SQLiteData uses `@FetchAll`, `@FetchOne` or
@@ -109,6 +114,11 @@ The current date, calendar, time zone, locale, UUIDs and waiting come only from
 or State initialisers: generate values in the reducer and pass them in. A
 dependency's live implementation reads them with `// tca-allow(T7): <reason>`.
 Fixtures and previews may use literals.
+
+A view may read the clock for timing no reducer reads, such as a debounce or the
+moment a popover closed, marked `// tca-allow(T7): <reason>`. A view formats with
+the locale and calendar of its environment (`@Environment(\.locale)`,
+`@Environment(\.calendar)`), set once from the store, never with `.current`.
 
 TCA lists dates, UUIDs and clocks among the dependencies that make a feature
 untestable when used directly
@@ -145,6 +155,8 @@ Every reducer has `TestStore` tests. Leaf features are tested exhaustively, the
 default. `exhaustivity = .off(showSkippedAssertions: true)` is allowed only in
 integration tests across features and for state observed from the database,
 each with a `// non-exhaustive: <reason>` comment on its line or the one above.
+A reducer whose state is re-read from the database rather than observed does not
+qualify: give its client deterministic ids and dates, and test it exhaustively.
 Every behavioural acceptance criterion of a PRD maps to at least one `TestStore`
 test; criteria about rendering are checked in the running app.
 
@@ -154,7 +166,8 @@ the check holds the form and the reason, the audit holds the mapping to PRDs.
 
 ## T11 Concurrency (check)
 
-Swift 6 language mode, complete checking, `@MainActor` test suites. Features use
+Swift 6 language mode in every package and project, complete checking, and
+`@MainActor` on every test that builds a `TestStore`, by suite or by function. Features use
 async/await, effects and the clock dependency. `DispatchQueue`, locks,
 `@unchecked Sendable` and `nonisolated(unsafe)` appear only inside a dependency's
 live implementation that wraps a queue-based or non-Sendable API, each marked
@@ -176,4 +189,5 @@ is written down where it is made and counted by the audit:
 | `// tca-allow(T11): <reason>` | T11 |
 | `// non-exhaustive: <reason>` | T10 |
 
-A marker without a reason a reviewer can check is a breach of its rule.
+A marker without a reason, or with one a reviewer cannot check, is a breach of
+its rule; the check refuses an empty one.

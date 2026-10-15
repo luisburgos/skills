@@ -11,8 +11,8 @@
 # A file is a test file when its path has a /Tests/ folder or its name ends in Tests.swift.
 # Exits 1 when any rule is broken, printing path:line: rule: what to do.
 #
-# Canonical copy: the auditing-tca-conformance skill of luisburgos/skills. A repository
-# vendors it unchanged, so the audit can tell a stale copy by comparing the two.
+# Vendored unchanged into a repository, beside the rules it checks; a change made here is
+# recorded in the decision record that adopts those rules. Each marker needs a reason.
 set -euo pipefail
 
 check() {
@@ -43,31 +43,34 @@ check() {
         if (!test && code ~ /@AppStorage/)
           report("T3", "@AppStorage: keep the preference in state with @Shared(.appStorage), or display it with @SharedReader")
 
-        if (!test && code ~ /@State[ (]/ && line !~ /\/\/ ephemeral:/)
+        if (!test && code ~ /@(SwiftUI\.)?State([ (]|$)/ && line !~ /\/\/ ephemeral: *[^ ]/)
           report("T4", "@State: move it to the store, or mark what no reducer reads with // ephemeral: <reason>")
 
-        if (!test && line !~ /tca-allow\(T7\)/ &&
-            code ~ /(^|[^A-Za-z0-9_.])(Date|UUID)\(\)|Date\.now|Task\.sleep|(Calendar|TimeZone|Locale)\.(current|autoupdatingCurrent)/)
+        # Explicit and implicit reads of now, ids, waiting and the current calendar, time zone
+        # or locale. ponytail: the implicit .current arm can catch RunLoop or Thread .current
+        # in a typed context; such a line takes the marker.
+        if (!test && line !~ /tca-allow\(T7\): *[^ ]/ &&
+            code ~ /(^|[^A-Za-z0-9_])(Foundation\.)?(Date|UUID)\(\)|Date\(timeIntervalSinceNow:|Date\.now|Task\.sleep|(Calendar|TimeZone|Locale)\.(current|autoupdatingCurrent)|(: *(Calendar|TimeZone|Locale) *=|[{(,:] *|\?\? *)\.(current|autoupdatingCurrent|now)([^A-Za-z0-9_]|$)/)
           report("T7", "read now, calendar, time zone, locale, ids or time through @Dependency, or mark a live implementation with // tca-allow(T7): <reason>")
 
-        if (!test && line !~ /tca-allow\(T11\)/ &&
-            code ~ /DispatchQueue|@unchecked Sendable|nonisolated\(unsafe\)|NSLock|os_unfair_lock/)
-          report("T11", "only inside a dependency'"'"'s live implementation, marked // tca-allow(T11): <how it is synchronised>")
+        if (!test && line !~ /tca-allow\(T11\): *[^ ]/ &&
+            code ~ /DispatchQueue|@unchecked Sendable|nonisolated\(unsafe\)|NSLock|NSRecursiveLock|NSCondition|OSAllocatedUnfairLock|os_unfair_lock|pthread_mutex/)
+          report("T11", "only inside a dependency'"'"'s live implementation, marked // tca-allow(T11): <how it is synchronised>; in a view, use Task { @MainActor in } or move the work into the reducer")
 
         if (test && code ~ /exhaustivity *=/) {
           if (code !~ /\.off\(showSkippedAssertions: *true\)/)
             report("T10", "a non-exhaustive TestStore uses .off(showSkippedAssertions: true)")
-          else if (line !~ /non-exhaustive:/ && prev !~ /non-exhaustive:/)
+          else if (line !~ /non-exhaustive: *[^ ]/ && prev !~ /non-exhaustive: *[^ ]/)
             report("T10", "say why with // non-exhaustive: <integration test or database-observed state>")
         }
         prev = line
       }
     '
-  # Swift 6 language mode in every package.
-  find "$root" -name Package.swift -not -path '*/.build/*' -not -path '*/checkouts/*' \
-    -not -path '*/.claude/worktrees/*' -print0 |
-    xargs -0 grep -n -H -E 'swift-tools-version: *5|swiftLanguage(Modes|Versions): *\[[^]]*\.v5' |
-    sed -E 's/^([^:]+:[0-9]+):.*/\1: T11: build the package in the Swift 6 language mode/' || true
+  # Swift 6 language mode in every package and project.
+  find "$root" \( -name Package.swift -o -name project.yml -o -name '*.xcconfig' -o -name project.pbxproj \) \
+    -not -path '*/.build/*' -not -path '*/checkouts/*' -not -path '*/.claude/worktrees/*' -print0 |
+    xargs -0 grep -n -H -E 'swift-tools-version: *5|swiftLanguage(Modes|Versions): *\[[^]]*\.v[45]|swiftLanguageMode\(\.v[45]\)|SWIFT_VERSION *[=:] *"?[45]' |
+    sed -E 's/^([^:]+:[0-9]+):.*/\1: T11: build in the Swift 6 language mode/' || true
 }
 
 # Every line added or changed since $2, as /absolute/path:line, untracked files whole.
@@ -97,10 +100,10 @@ run() {
   fi
   if [ -n "$found" ]; then
     printf '%s\n' "$found"
-    echo "$(printf '%s\n' "$found" | wc -l | tr -d ' ') breach(es) of the TCA norm." >&2
+    echo "$(printf '%s\n' "$found" | wc -l | tr -d ' ') breach(es) of the TCA rules." >&2
     return 1
   fi
-  echo "TCA norm: no breach in $root${since:+ since $since}."
+  echo "TCA rules: no breach in $root${since:+ since $since}."
 }
 
 self_test() {
@@ -114,6 +117,9 @@ self_test() {
 @State private var shown = false
 let now = Date()
 let later = Date(timeIntervalSinceNow: 60)
+var calendar: Calendar { .current }
+let day = Day(date, in: .current)
+let averages = average(at: .now)
 let id = UUID() // tca-allow(T7): live uuid client
 let calendar = Calendar.current
 try await Task.sleep(for: .seconds(1))
@@ -121,6 +127,7 @@ try await Task.sleep(for: .seconds(1))
 let link = "https://example.com" // a URL, not a comment break
 DispatchQueue.main.async {}
 final class Box: @unchecked Sendable {} // tca-allow(T11): guarded by a lock
+@State private var pressed = false // ephemeral:
 SWIFT
   cat > "$dir/Tests/FeatureTests.swift" <<'SWIFT'
 store.exhaustivity = .off
@@ -132,8 +139,10 @@ SWIFT
   printf '%s\n' '// swift-tools-version:5.9' > "$dir/Package.swift"
 
   expected=$(printf '%s\n' \
-    'Feature.swift:1: T3' 'Feature.swift:3: T4' 'Feature.swift:4: T7' 'Feature.swift:7: T7' \
-    'Feature.swift:8: T7' 'Feature.swift:11: T11' 'FeatureTests.swift:1: T10' 'FeatureTests.swift:4: T10' 'Package.swift:1: T11')
+    'Feature.swift:1: T3' 'Feature.swift:3: T4' 'Feature.swift:4: T7' 'Feature.swift:5: T7' \
+    'Feature.swift:6: T7' 'Feature.swift:7: T7' 'Feature.swift:8: T7' 'Feature.swift:10: T7' \
+    'Feature.swift:11: T7' 'Feature.swift:14: T11' 'Feature.swift:16: T4' \
+    'FeatureTests.swift:1: T10' 'FeatureTests.swift:4: T10' 'Package.swift:1: T11')
   actual=$(check "$dir" | awk -F': ' '{ n = split($1, path, "/"); print path[n] ": " $2 }' | sort)
   if [ "$actual" != "$(printf '%s\n' "$expected" | sort)" ]; then
     echo "self-test failed. Expected:"; printf '%s\n' "$expected" | sort
@@ -147,7 +156,7 @@ SWIFT
   printf '%s\n' '@AppStorage("y") var y = 2' >> "$dir/Sources/Feature.swift"
   printf '%s\n' '@State private var open = false' > "$dir/Sources/New.swift"
   actual=$(run "$dir" HEAD 2>/dev/null | awk -F': ' '{ n = split($1, path, "/"); print path[n] ": " $2 }' | sort || true)
-  expected=$(printf '%s\n' 'Feature.swift:13: T3' 'New.swift:1: T4')
+  expected=$(printf '%s\n' 'Feature.swift:17: T3' 'New.swift:1: T4')
   if [ "$actual" != "$expected" ]; then
     echo "self-test of --since failed. Expected:"; printf '%s\n' "$expected"
     echo "Got:"; printf '%s\n' "$actual"
